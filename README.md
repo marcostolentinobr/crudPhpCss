@@ -12,6 +12,7 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 | Nome do Projeto | Texto   | Sim          |
 | Data Início     | Data    | Sim          |
 | Data de fim     | Data    | Sim          |
+| *Data concluído | Data    | Não          |
 
 #### Tabela Atividades
 | Campo             | Tipo    | Obrigatório  |
@@ -20,7 +21,7 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 | Nome da Atividade | Texto   | Sim          |
 | Data Início       | Data    | Sim          |
 | Data de fim       | Data    | Sim          |
-| Finalizada?       | Boolean | Não          |
+| *Data concluída   | data    | Não          |
 
 ## Simulações
 
@@ -51,16 +52,17 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 ???? Explicar o funcionamento e tecnologias ????;
 
 ## Usar
-.PHP;
-.Mysql;
+* PHP;
+* Mysql;
 
-.???? SOLID ????;
-.???? PHPUnit (Testes automatizados) ????;
-.????Docker (Ambiente)????;
+* ??? SOLID ???;
+* ??? PHPUnit (Testes automatizados) ???;
+* ???Docker (Ambiente)???;
 
-.???? Seguir praticas de código limpo ????;
-.???? Constantes melhorias ????;
-.???? Melhorar a performance do produto ????;
+* ??? Seguir praticas de código limpo ???;
+* ??? Constantes melhorias ???;
+* ??? Melhorar a performance do produto ???;
 
-.???? TDD ????;
-.???? MVC ????;
+* ??? TDD ???;
+* ??? MVC ???;
+* ??? DDD ???;
