@@ -45,19 +45,19 @@
     <column id="COL10" populated="true" UUID="d32cf9df-2a79-413a-8b25-237f8697f737" autoIncrement="true" autoIncrementSequenceName="ATIVIDADE_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="-5" userDefinedTypeUUID="433cc8af-284d-4abb-8ef7-08ebcb34dbf1" >
      <remarks></remarks>
     </column>
-    <column id="COL11" populated="true" UUID="7adc86f3-d3ad-4290-9440-9b7a3dfc84f5" autoIncrement="false" autoIncrementSequenceName="PROJETO_id_seq" defaultValue="" name="PROJETO_id" nullable="0" physicalName="PROJETO_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL11" populated="true" UUID="7adc86f3-d3ad-4290-9440-9b7a3dfc84f5" autoIncrement="false" autoIncrementSequenceName="PROJETO_id_seq_1" defaultValue="" name="PROJETO_id" nullable="0" physicalName="PROJETO_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL12" populated="true" UUID="1ccec1d5-48ab-4c26-a135-500e2dfb6147" autoIncrement="false" autoIncrementSequenceName="ATIVIDADE_nome_seq" defaultValue="" name="nome" nullable="0" physicalName="nome" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL13" populated="true" UUID="0397c259-241a-4447-90b3-14f30c6b682c" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_inicio_seq" defaultValue="" name="data_inicio" nullable="0" physicalName="data_inicio" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+    <column id="COL13" populated="true" UUID="0397c259-241a-4447-90b3-14f30c6b682c" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_inicio_seq_1" defaultValue="" name="data_inicio" nullable="0" physicalName="data_inicio" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
      <remarks></remarks>
     </column>
-    <column id="COL14" populated="true" UUID="745e4af3-372e-45f2-8d1d-346f7e1152b8" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_fim_seq" defaultValue="" name="data_fim" nullable="0" physicalName="data_fim" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+    <column id="COL14" populated="true" UUID="745e4af3-372e-45f2-8d1d-346f7e1152b8" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_fim_seq_1" defaultValue="" name="data_fim" nullable="0" physicalName="data_fim" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
      <remarks></remarks>
     </column>
-    <column id="COL15" populated="true" UUID="e9d0d334-dca1-4927-b62f-265593759b3b" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_concluido_seq" defaultValue="" name="data_concluido" nullable="1" physicalName="data_concluido" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+    <column id="COL15" populated="true" UUID="e9d0d334-dca1-4927-b62f-265593759b3b" autoIncrement="false" autoIncrementSequenceName="PROJETO_data_concluido_seq_1" defaultValue="" name="data_concluido" nullable="1" physicalName="data_concluido" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
      <remarks></remarks>
     </column>
     </folder>
@@ -77,7 +77,7 @@
    </relationship>
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.GenericDDLGenerator" allow-connection="true"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.SQLServer2005DDLGenerator" allow-connection="false"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
  <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">

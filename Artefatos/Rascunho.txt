@@ -96,6 +96,7 @@ Talvez - Afazeres...
 *Usar flutter? Vue? Bootstrap? Angular?
 *Criar descrição para a atividade
 *trigger para progressos... store procedure...?
+*unique nome projeto?
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão
