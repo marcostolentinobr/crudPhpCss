@@ -81,7 +81,6 @@ Atividades
   Atividade,Início,Término,Esforço (Dias), Completo (%), Situação
   
  Capacidade para novos projeotos/Alocação de equipe
-  
  
 Talvez - Afazeres...
 *Banco não relacional para:
@@ -95,46 +94,8 @@ Talvez - Afazeres...
 *Não deixar concluir a insclusão de projeto caso não tenha alguma atividade, excluir na sequencia (commit rollback)
 *Ao finalizar a atividade que falta perguntar se quer finalizar o projeto o urever as atividades.
 *Usar flutter? Vue? Bootstrap? Angular?
+*Criar descrição para a atividade
+*trigger para progressos... store procedure...?
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão
-
-
-Propaganda final
-**Modelos de Projetos
-**Marcos
-**Riscos
-**Agenda sicronizada com o outlook e google agenda
-**Financeiro
-*E outras funcionalidades
-
-Youtube
-*Aceitando convites
-*Alterando nome de usuáro
-*capacidade x demanda
-*Criando sua conta
-*Convidando usuários
-*Criando comunidades
-*Criando projetos e pastas
-*Personalizando situações
-*Relatórios
-*Personalizando categorias
-*Criando atividades
-*Importar do Bizagi
-*Personalizadno logos
-*Utilizar Callculo
-*IMportando XML
-*Lançamentos financeiros
-*Calculo de custo de mão de obra
-*Kanban - Funacionalidade Artia
-*Cronogram de Projeto
-*Como iniciar um projeto
-
-2020 (Melhor que 2019 mesmo, para deixar na capa)
-https://www.youtube.com/watch?v=ndIf8_HI4RU
-
-2019
-https://www.youtube.com/watch?v=5v20TYULCYs
-
-2015
-https://www.youtube.com/watch?v=a1u0yryafao
