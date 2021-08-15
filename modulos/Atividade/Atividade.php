@@ -1,42 +1,11 @@
 <?php
-require_once RAIZ . '/libs/Conexao.php';
-
+require_once __DIR__ . '/AtividadeModel.php';
 class Atividade extends Controller
 {
-
-    //Params
-    private $modulo = __CLASS__;
     private $descricao = 'Atividades';
-
-    //select
-    private $select = '
-        SELECT 
-        
-               -- atividade 
-               A.id,
-               A.nome,
-               A.data_inicio,
-               A.data_fim,
-               A.data_concluido,
-
-               -- projeto
-               A.projeto_id,       
-               P.nome AS projeto_nome        
-
-          FROM ATIVIDADE A
-          JOIN PROJETO P
-            ON P.id = A.projeto_id
-    ';
 
     public function insert()
     {
-
-        //qry
-        $insert = '
-            INSERT INTO ATIVIDADE 
-            ( projeto_id,  nome,  data_inicio,  data_fim) VALUES 
-            (:projeto_id, :nome, :data_inicio, :data_fim)
-        ';
 
         //line
         $line = [
@@ -46,8 +15,8 @@ class Atividade extends Controller
             'data_fim'    => $_POST['data_fim'],
         ];
 
-        //exec
-        $exec = $this->Pdo->prepExec($insert,  $line);
+        $Model = new AtividadeModel();
+        $exec =  $Model->insert($line);
 
         //erro
         if ($exec['erro']) {
@@ -58,7 +27,7 @@ class Atividade extends Controller
             $this->setMsg(
                 'Atividade incluída com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
 
@@ -66,45 +35,54 @@ class Atividade extends Controller
         $this->list();
     }
 
-    public function update()
+    public function list()
     {
-        //qry
-        $delete = '
-        UPDATE ATIVIDADE 
-           SET projeto_id  = :projeto_id,
-               nome        = :nome,
-               data_inicio = :data_inicio,
-               data_fim    = :data_fim
-         WHERE id = :id';
 
-        //line
-        $line = [
-            'projeto_id'  => trim($_POST['projeto_id']),
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim']
-        ];
+        $Model = new AtividadeModel();
+        $all =  $Model->list();
+
+        //dados
+        $this->Dados = $all['dados'];
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $all['erro']);
+        }
+
+        //dado
+        $this->setDado();
+
+        //View
+        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
+    }
+
+    public function delete()
+    {
 
         //where
-        $where = ['id' => $_POST['id']];
+        $where = ['id' => CHAVE];
 
-        //exec
-        $exec = $this->Pdo->prepExec($delete, array_merge($line, $where));
+        $Model = new AtividadeModel();
+        $exec =  $Model->delete($where);
 
         //erro
         if ($exec['erro']) {
             $this->setMsg($this->msg_erro, 'red', $exec['erro']);
         }
-        //Nada modificado
+        //Não encontrado
         elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg('Atividade não alterada, nada modificado', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Atividade não encontrada para excluir',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
             $this->setMsg(
-                'Atividade alterada com sucesso!',
+                'Atividade excluída com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
 
@@ -115,17 +93,12 @@ class Atividade extends Controller
     public function edit()
     {
 
-        //select
-        //### ATENÇÃO ### - melhorar performa-se aqui pois não precisa do join do select padrão
-        $select_edit = $this->select . '
-            WHERE A.id = :id
-        ';
-
         //where
         $where = ['id' => CHAVE];
 
         //all
-        $all = $this->Pdo->all($select_edit, $where);
+        $Model = new AtividadeModel();
+        $all = $Model->list($where);
 
         //dado
         $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : new stdClass());
@@ -136,7 +109,11 @@ class Atividade extends Controller
         }
         //Não encontrado
         elseif (count((array)$this->Dado) == 0) {
-            $this->setMsg('Atividade não encontrada para editar', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Atividade não encontrada para editar',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
@@ -149,63 +126,46 @@ class Atividade extends Controller
         $this->list();
     }
 
-    public function delete()
+    public function update()
     {
 
-        //qry
-        $delete = '
-            DELETE 
-              FROM ATIVIDADE
-             WHERE id = :id
-        ';
+        //line
+        $line = [
+            'projeto_id'  => trim($_POST['projeto_id']),
+            'nome'        => trim($_POST['nome']),
+            'data_inicio' => $_POST['data_inicio'],
+            'data_fim'    => $_POST['data_fim']
+        ];
 
         //where
-        $where = ['id' => CHAVE];
+        $where = ['id' => $_POST['id']];
 
-        //exec
-        $exec = $this->Pdo->prepExec($delete, $where);
+        $Model = new AtividadeModel();
+        $exec =  $Model->update($line, $where);
 
         //erro
         if ($exec['erro']) {
             $this->setMsg($this->msg_erro, 'red', $exec['erro']);
-        } 
-        //Não encontrado
+        }
+        //Nada modificado
         elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg('Atividade não encontrada para excluir', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Atividade não alterada, nada modificado',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
             $this->setMsg(
-                'Atividade excluída com sucesso!',
+                'Atividade alterada com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
 
-
         //list
         $this->list();
-    }
-
-    public function list()
-    {
-
-        //dado
-        $this->setDado();
-
-        //all
-        $all = $this->Pdo->all($this->select);
-
-        //dados
-        $this->Dados = $all['dados'];
-
-        //erro
-        if ($all['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $all['erro']);
-        }
-
-        //View
-        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
     }
 
     private function setDado()

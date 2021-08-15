@@ -4,8 +4,6 @@ require_once RAIZ . '/libs/Conexao.php';
 class Projeto extends Controller
 {
 
-    //Params
-    private $modulo = __CLASS__;
     private $descricao = 'Projetos';
 
     //select

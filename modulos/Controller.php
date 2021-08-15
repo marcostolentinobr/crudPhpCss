@@ -3,20 +3,21 @@
 class Controller
 {
     //Parametros
+    protected $modulo;
     protected $acao = 'insert';
     protected $acao_descricao = 'Incluir';
     protected $msg;
     protected $msg_erro = 'Não executou! Tente novamente. Se persistir entre em contato.';
+    protected $msg_nenhuma_linha_encontrada = 'Nenhuma linha encontrada';
 
     //Instancias
-    protected $Pdo;
     protected $Dado;
 
     public function __construct()
     {
 
-        //Conexao
-        $this->Pdo = new Conexao('EUAX');
+        //modulo
+        $this->modulo = get_called_class();
 
         //Dado
         $this->Dado = new stdClass();
@@ -34,5 +35,10 @@ class Controller
                 <small style='font-size: 10px; color: silver'>$obs</small>
             </h3>
         ";
+    }
+
+    protected function getMsgLinhaAfetada($number)
+    {
+        return "$number linhas afetada(s)";
     }
 }
