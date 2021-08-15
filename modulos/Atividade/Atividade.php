@@ -183,7 +183,7 @@ class Atividade extends Controller
             }
             //Nada modificado
             elseif ($exec['prep']->rowCount() == 0) {
-                $msg = 'Atividade não alterada, nada modificado';
+                $msg = 'Atividade não alterada, nada modificado.';
                 $cor = 'red';
                 $obs = $this->msg_nenhuma_linha_encontrada;
             }

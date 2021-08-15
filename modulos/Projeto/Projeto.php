@@ -3,32 +3,60 @@ require_once __DIR__ . '/ProjetoModel.php';
 class Projeto extends Controller
 {
     private $descricao = 'Projetos';
+    protected $permitido = [
+
+        //nome
+        'nome' => [
+            'descricao' => 'Nome',
+            'params'    => 'required|trim|max:50'
+        ],
+
+        //data_inicio
+        'data_inicio' => [
+            'descricao' => 'Início',
+            'params'    => 'required|date:Y-m-d'
+        ],
+
+        //data_fim
+        'data_fim' => [
+            'descricao' => 'Fim',
+            'params' => 'required|date:Y-m-d'
+        ]
+    ];
 
     public function insert()
     {
 
-        //line
-        $line = [
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim'],
-        ];
+        //dados
+        $DADOS = $this->getDadosValida($_POST);
 
-        $Model = new ProjetoModel();
-        $exec =  $Model->insert($line);
-
-        //erro
-        if ($exec['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
         }
-        //sucesso
+        //sem erros de campo
         else {
-            $this->setMsg(
-                'Projeto incluído com sucesso!',
-                'green',
-                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
-            );
+            $Model = new ProjetoModel();
+            $exec =  $Model->insert($DADOS['dados']);
+
+            //erro
+            if ($exec['erro']) {
+                $msg = $this->msg_erro;
+                $cor = 'red';
+                $obs = $exec['erro'];
+            }
+            //sucesso
+            else {
+                $msg = 'Projeto incluído com sucesso!';
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
         }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
 
         //list
         $this->list();
@@ -129,38 +157,40 @@ class Projeto extends Controller
     {
 
         //line
-        $line = [
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim']
-        ];
+        $DADOS = $this->getDadosValida($_POST);
 
-        //where
-        $where = ['id' => $_POST['id']];
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
+        } else {
+            //where
+            $where = ['id' => $_POST['id']];
 
-        $Model = new ProjetoModel();
-        $exec =  $Model->update($line, $where);
+            $Model = new ProjetoModel();
+            $exec =  $Model->update($DADOS['dados'], $where);
 
-        //erro
-        if ($exec['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+            //erro
+            if ($exec['erro']) {
+                $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+            }
+            //Nada modificado
+            elseif ($exec['prep']->rowCount() == 0) {
+                $msg = 'Projeto não alterado, nada modificado.';
+                $cor = 'red';
+                $obs = $this->msg_nenhuma_linha_encontrada;
+            }
+            //Sucesso
+            else {
+                $msg = 'Projeto alterado com sucesso!';
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
         }
-        //Nada modificado
-        elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg(
-                'Projeto não alterado, nada modificado',
-                'red',
-                $this->msg_nenhuma_linha_encontrada
-            );
-        }
-        //Sucesso
-        else {
-            $this->setMsg(
-                'Projeto alterado com sucesso!',
-                'green',
-                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
-            );
-        }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
 
         //list
         $this->list();
@@ -168,8 +198,7 @@ class Projeto extends Controller
 
     private function setDado()
     {
-        
-        //Dado projeto
+        //Dado Projeto
         $this->Dado->id          = isset($this->Dado->id)          ? $this->Dado->id          : '';
         $this->Dado->nome        = isset($this->Dado->nome)        ? $this->Dado->nome        : '';
         $this->Dado->data_inicio = isset($this->Dado->data_inicio) ? $this->Dado->data_inicio : '';

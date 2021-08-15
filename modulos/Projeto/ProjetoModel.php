@@ -8,7 +8,7 @@ class ProjetoModel extends Model
     private $select = '
         SELECT 
         
-               -- projeto
+               -- atividade 
                P.id,
                P.nome,
                P.data_inicio,
@@ -17,17 +17,6 @@ class ProjetoModel extends Model
 
           FROM PROJETO P
     ';
-
-    //insert
-    public function insert($line)
-    {
-        $insert = '
-            INSERT INTO PROJETO 
-            ( nome,  data_inicio,  data_fim) VALUES 
-            (:nome, :data_inicio, :data_fim)
-        ';
-        return $this->Pdo->prepExec($insert,  $line);
-    }
 
     //list
     public function list($where = [])
@@ -38,7 +27,18 @@ class ProjetoModel extends Model
             ';
         }
 
-        return $this->Pdo->all($this->select, $where);
+        return $this->all($this->select, $where);
+    }
+
+    //insert
+    public function insert($line)
+    {
+        $insert = '
+            INSERT INTO PROJETO 
+            ( nome,  data_inicio,  data_fim) VALUES 
+            (:nome, :data_inicio, :data_fim)
+        ';
+        return $this->prepExec($insert,  $line);
     }
 
     //delete
@@ -50,7 +50,7 @@ class ProjetoModel extends Model
              WHERE id = :id
         ';
 
-        return $this->Pdo->prepExec($delete, $where);
+        return $this->prepExec($delete, $where);
     }
 
     //update
@@ -64,6 +64,6 @@ class ProjetoModel extends Model
              WHERE id = :id
         ';
 
-        return $this->Pdo->prepExec($delete, array_merge($line, $where));
+        return $this->prepExec($delete, array_merge($line, $where));
     }
 }
