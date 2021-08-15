@@ -29,22 +29,31 @@ class Conexao extends PDO
         return $this->pdo;
     }
 
-    public function fetchAll($query, $params = [], $fetch = PDO::FETCH_OBJ)
+    public function fetchAll($query, $params = [], $onlyFirst = false, $fetch = PDO::FETCH_OBJ)
     {
-        $prepare = $this->prepareExecute($query, $params);
-        return $prepare->fetchAll($fetch);
+        $prepareExecute = $this->prepareExecute($query, $params);
+        $return = $prepareExecute['prepare']->fetchAll($fetch);
+
+        if ($onlyFirst && isset($return[0])) {
+            return $return[0];
+        }
+
+        return $return;
     }
 
     public function execute($query, $params)
     {
-        return $this->prepareExecute($query, $params, false);
+        return $this->prepareExecute($query, $params);
     }
 
-    private function prepareExecute($query, $params = [], $returnPrepare = true)
+    private function prepareExecute($query, $params = [])
     {
         $prepare = $this->prepare($query);
         $execute = $prepare->execute($params);
-        return ($returnPrepare ? $prepare : $execute);
+        return [
+            'prepare' => $prepare,
+            'execute' => $execute
+        ];
     }
 
     private function setDbname($dbname)

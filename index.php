@@ -15,88 +15,214 @@ function pr($str)
 require_once 'Conexao.php';
 $Pdo = new Conexao('EUAX');
 
+//select
+$select = '
+    SELECT P.id,
+           P.nome,
+           P.data_inicio,
+           P.data_fim,
+           P.data_concluido 
+      FROM PROJETO P
+';
+
+$acao = 'insert';
+$acaoDescricao = 'Incluir';
+
 try {
 
-    if ($_POST) {
+    //insert
+    if (isset($_POST['ACAO']) && $_POST['ACAO'] == 'insert') {
 
-        $insert = "
+        //query
+        $insert = '
             INSERT INTO PROJETO 
             (nome ,  data_inicio,  data_fim) VALUES 
             (:nome, :data_inicio, :data_fim)
-        ";
+        ';
 
+        //execute
         $execute = $Pdo->execute($insert, [
-            'nome' => trim($_POST['nome']),
+            'nome'        => trim($_POST['nome']),
             'data_inicio' => $_POST['data_inicio'],
-            'data_fim' => $_POST['data_fim'],
+            'data_fim'    => $_POST['data_fim'],
         ]);
 
-        //pr($execute);
-        echo '<h2 style="color: green">Criado com sucesso!</h2>';
+        //mensagem
+        echo " 
+            <h2 style='color: green'>
+                Incluído com sucesso!<br>
+                <small style='font-size: 10px; color: silver'>Linhas afetadas: {$execute['prepare']->rowCount()}</small>
+            </h2>
+        ";
     }
+    //delete
+    elseif (isset($_POST['ACAO']) && $_POST['ACAO'] == 'delete') {
 
-    $select = '
-        SELECT P.id,
-               P.nome,
-               P.data_inicio,
-               P.data_fim,
-               P.data_concluido 
-          FROM PROJETO P
-    ';
-    $PROJETOS = $Pdo->fetchAll($select);
+        //query
+        $delete = '
+            DELETE 
+              FROM PROJETO 
+             WHERE id = :id
+        ';
+
+        //execute
+        $execute = $Pdo->execute($delete, [
+            'id' => $_POST['id']
+        ]);
+
+        //mensagem
+        echo " 
+            <h2 style='color: green'>
+                Excluído com sucesso!<br>
+                <small style='font-size: 10px; color: silver'>Linhas afetadas: {$execute['prepare']->rowCount()}</small>
+            </h2>
+        ";
+    }
+    //update
+    elseif (isset($_POST['ACAO']) && $_POST['ACAO'] == 'update') {
+
+        //query
+        $delete = '
+            UPDATE PROJETO 
+               SET nome        = :nome,
+                   data_inicio = :data_inicio,
+                   data_fim    = :data_fim
+             WHERE id = :id';
+
+        //execute
+        $execute = $Pdo->execute($delete, [
+            'nome'        => trim($_POST['nome']),
+            'data_inicio' => $_POST['data_inicio'],
+            'data_fim'    => $_POST['data_fim'],
+            'id'    => $_POST['id'],
+        ]);
+
+        //mensagem
+        echo " 
+            <h2 style='color: green'>
+                Alterado com sucesso!<br>
+                <small style='font-size: 10px; color: silver'>Linhas afetadas: {$execute['prepare']->rowCount()}</small>
+            </h2>
+        ";
+    }
+    //edit
+    elseif (isset($_POST['ACAO']) && $_POST['ACAO'] == 'edit') {
+        $acao = 'update';
+        $acaoDescricao = 'Alterar';
+
+        //where
+        $select_edit = $select . '
+            WHERE id = :id
+        ';
+
+        //dado
+        $Dado = $Pdo->fetchAll(
+            $select_edit,
+            ['id' => $_POST['id']],
+            true
+        );
+
+    }
 } catch (Exception $e) {
-    //pr($e);
-    exit('<strong style="color: red">Não executou. Tente novamente. Se persistir entre em contato.</strong>');
+    echo " 
+        <h2 style='color: red'>
+            Não executou! Tente novamente. Se persistir entre em contato.<br>
+            <small style='font-size: 10px; color: silver'>{$e->getMessage()}</small>
+        </h2>
+    ";
 }
 
+try {
+    $Dados = $Pdo->fetchAll($select);
+} catch (Exception $e) {
+    $Dados = new stdClass();
+    $Dados->msg = " 
+        <h2 style='color: red'>
+            Não listou! Tente novamente. Se persistir entre em contato.<br>
+            <small style='font-size: 10px; color: silver'>{$e->getMessage()}</small>
+        </h2>
+    ";
+}
+
+if (!isset($Dado)) {
+    $Dado = new stdClass();
+}
+
+$Dado->id          = isset($Dado->id) ? $Dado->id : '';
+$Dado->nome        = isset($Dado->nome) ? $Dado->nome : '';
+$Dado->data_inicio = isset($Dado->data_inicio) ? $Dado->data_inicio : '';
+$Dado->data_fim    = isset($Dado->data_fim) ? $Dado->data_fim : '';
 ?>
 
 <!-- formulario -->
 <form method="POST">
 
+    <!-- id -->
+    <input name="id" value="<?= $Dado->id ?>" hidden>
+
     <!-- nome -->
     <label for="nome">Nome:</label><br>
-    <input name="nome" id="nome" type="text" placeholder="Nome" required>
+    <input name="nome" id="nome" type="text" value="<?= $Dado->nome ?>" placeholder="Nome" required>
     <br><br>
 
     <!-- data_inicio -->
     <label for="data_inicio">Início:</label><br>
-    <input name="data_inicio" id="data_inicio" type="date" placeholder="Início" required>
+    <input name="data_inicio" id="data_inicio" type="date" value="<?= $Dado->data_inicio ?>" placeholder="Início" required>
     <br><br>
 
     <!-- data_fim -->
     <label for="data_fim">Fim:</label><br>
-    <input name="data_fim" id="data_fim" type="date" placeholder="Fim" required>
+    <input name="data_fim" id="data_fim" type="date" value="<?= $Dado->data_fim ?>" placeholder="Fim" required>
     <br><br>
 
-    <button>Criar projeto</button>
+    <!-- insert -->
+    <button name="ACAO" value="<?= $acao ?>"><?= $acaoDescricao ?></button>
 </form>
 <!-- fim formulario -->
 
-<!-- listagem -->
+<!-- select -->
 <table border="1">
     <thead>
+
+        <!-- cabeçalho -->
         <th>Nome</th>
         <th>Início</th>
         <th>Fim</th>
         <th>Concluído</th>
+        <th>Ações</th>
+
     </thead>
     <tbody>
-        <?php foreach ($PROJETOS as $projeto) : ?>
+
+        <?php if (isset($Dados->msg)) : ?>
             <tr>
-                <!-- nome -->
-                <td><?= $projeto->nome ?></td>
-
-                <!-- data_inicio -->
-                <td><?= $projeto->data_inicio ?></td>
-
-                <!-- data_fim -->
-                <td><?= $projeto->data_fim ?></td>
-
-                <!-- data_concluido -->
-                <td><?= $projeto->data_concluido ?></td>
+                <td colspan="100%"><?= $Dados->msg ?></td>
             </tr>
-        <?php endforeach ?>
+        <?php elseif (count((array)$Dados) == 0) : ?>
+            <tr>
+                <td colspan="100%">Sem dados para listar</td>
+            </tr>
+        <?php else : ?>
+            <?php foreach ($Dados as $dado) : ?>
+                <tr>
+
+                    <!-- dados -->
+                    <td><?= $dado->nome ?></td>
+                    <td><?= $dado->data_inicio ?></td>
+                    <td><?= $dado->data_fim ?></td>
+                    <td><?= $dado->data_concluido ?></td>
+
+                    <!-- ações -->
+                    <td>
+                        <form method="POST">
+                            <input name="id" value="<?= $dado->id ?>" hidden>
+                            <button name="ACAO" value="edit">Editar</button>
+                            <button name="ACAO" value="delete">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        <?php endif ?>
     </tbody>
 </table>
-<!-- fim listagem -->
+<!-- fim select -->

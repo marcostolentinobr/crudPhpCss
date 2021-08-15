@@ -99,6 +99,7 @@ Talvez - Afazeres...
 *unique nome projeto?
 *usar use namespace..?
 *converter data para mostrar
+*validação de inclusão de datas
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão
