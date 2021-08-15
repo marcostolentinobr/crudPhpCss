@@ -21,7 +21,7 @@
     //Controller
     $fileControler = RAIZ . '/modulos/' . CLASSE . '/' . CLASSE . '.php';
     if (file_exists($fileControler)) {
-        //require_once 'modulos/ControllerPadrao.php';
+        require_once 'modulos/Controller.php';
         require_once $fileControler;
     }
 

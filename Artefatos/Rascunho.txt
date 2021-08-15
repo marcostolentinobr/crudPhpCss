@@ -101,6 +101,9 @@ Talvez - Afazeres...
 *converter data para mostrar
 *validação de inclusão de datas
 *config bd via conexao
+*em conexao padronizar parametros
+*singleton para pdo
+*EXCEPTION TRADUZIR PORTUGUES
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão

@@ -11,7 +11,7 @@ class Conexao extends PDO
     private $charset = 'utf8mb4';
     private $pdo;
 
-     function __construct($dbname, $driver = '', $host = '', $user = '', $pass = '', $charset = '')
+    function __construct($dbname, $driver = '', $host = '', $user = '', $pass = '', $charset = '')
     {
         $this->setDbname($dbname);
         $this->setDriver($driver);
@@ -29,30 +29,33 @@ class Conexao extends PDO
         return $this->pdo;
     }
 
-    public function fetchAll($query, $params = [], $onlyFirst = false, $fetch = PDO::FETCH_OBJ)
+    public function all($qry, $params = [], $fetch = PDO::FETCH_OBJ)
     {
-        $prepareExecute = $this->prepareExecute($query, $params);
-        $return = $prepareExecute['prepare']->fetchAll($fetch);
+        $prepExec = $this->prepExec($qry, $params);
 
-        if ($onlyFirst && isset($return[0])) {
-            return $return[0];
+        $return = [
+            'dados' => $prepExec['prep']->fetchAll($fetch)
+        ];
+
+        return array_merge($return, $prepExec);
+    }
+
+    public function prepExec($qry, $params = [])
+    {
+
+        $exec = null;
+        $erro = null;
+        try {
+            $prep = $this->prepare($qry);
+            $exec = $prep->execute($params);
+        } catch (Exception $e) {
+            $erro = $e->getMessage();
         }
 
-        return $return;
-    }
-
-    public function execute($query, $params)
-    {
-        return $this->prepareExecute($query, $params);
-    }
-
-    private function prepareExecute($query, $params = [])
-    {
-        $prepare = $this->prepare($query);
-        $execute = $prepare->execute($params);
         return [
-            'prepare' => $prepare,
-            'execute' => $execute
+            'prep' => $prep,
+            'exec' => $exec,
+            'erro' => $erro
         ];
     }
 
