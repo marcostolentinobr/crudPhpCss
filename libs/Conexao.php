@@ -11,7 +11,7 @@ class Conexao extends PDO
     private $charset = 'utf8mb4';
     private $pdo;
 
-    public function __construct($dbname, $driver = '', $host = '', $user = '', $pass = '', $charset = '')
+     function __construct($dbname, $driver = '', $host = '', $user = '', $pass = '', $charset = '')
     {
         $this->setDbname($dbname);
         $this->setDriver($driver);

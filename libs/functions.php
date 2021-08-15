@@ -22,7 +22,7 @@ function init()
   define('CHAVE', isset($url[2]) ? $url[2] : '');
 
   //RAIZ
-  define('RAIZ', __DIR__);
+  define('RAIZ', str_replace('/libs', '',str_replace('\libs', '', __DIR__)));
 
   //URL
   $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);

@@ -1,4 +1,4 @@
-<?php require_once 'config.php' ?>
+<?php require_once __DIR__ . '/config.php' ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,32 +17,12 @@
     <a href="<?= URL ?>Atividade/list">Atividades</a>
 
     <?php
-
-    $fileIndex = 'modulos/' . CLASSE . '.php';
-    if (file_exists($fileIndex)) {
-        require_once $fileIndex;
-    } else {
-        echo '
-            <p>
-                1ª -> Cadastro o projeto<br>
-                2ª -> Cadastre a atividade
-            </p>
-        ';
-    }
-
-    /*
-    //Model
-    $FileModel = 'Models/' . CLASSE . 'Model.php';
-    if (file_exists($FileModel)) {
-        require_once 'Models/Model.php';
-        require_once $FileModel;
-    }
-
+    
     //Controller
-    $FileControler = 'Controllers/' . CLASSE . '.php';
-    if (file_exists($FileControler)) {
-        require_once 'Controllers/Controller.php';
-        require_once $FileControler;
+    $fileControler = RAIZ . '/modulos/' . CLASSE . '/' . CLASSE . '.php';
+    if (file_exists($fileControler)) {
+        //require_once 'modulos/ControllerPadrao.php';
+        require_once $fileControler;
     }
 
     //Classe
@@ -58,11 +38,14 @@
     }
     //Não existe classe
     else {
-        echo '<h2>1ª Cadastre os cursos</h2>';
-        echo '<h2>2ª Cadastre as formações</h2>';
-        echo '<h2>3ª Cadastre as pessoas</h2>';
+        echo '
+            <p>
+                1ª -> Cadastro o projeto<br>
+                2ª -> Cadastre a atividade
+            </p>
+        ';
     }
-    */
+
 
     ?>
 </body>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../libs/Conexao.php';
+require_once __DIR__ . '/../../libs/Conexao.php';
 $Pdo = new Conexao('EUAX');
 
 //select
