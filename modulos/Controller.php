@@ -236,7 +236,7 @@ class Controller
         ";
     }
 
-   
+
     protected function setDado()
     {
         foreach ($this->permitido as $col => $dados) {
@@ -298,5 +298,10 @@ class Controller
             'dados' => $campo,
             'erros' => $erros
         ];
+    }
+
+    private function addPagina($pagina)
+    {
+        require_once RAIZ . "/modulos/$this->modulo/paginas/" . strtolower($this->modulo) . "_$pagina.php";
     }
 }

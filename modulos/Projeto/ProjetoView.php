@@ -5,8 +5,8 @@ echo "
     $this->msg
 ";
 
-require_once __DIR__ . '/paginas/projeto_form.php';
+$this->addPagina('form');
 
 echo '<br>';
 
-require_once __DIR__ . '/paginas/projeto_list.php';
+$this->addPagina('list');

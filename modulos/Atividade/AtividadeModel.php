@@ -1,11 +1,12 @@
 <?php
 
-require_once RAIZ . '/modulos/Model.php';
-
 class AtividadeModel extends Model
 {
+
+    protected $tabela = 'ATIVIDADE';
+
     //select
-    private $select = '
+    protected $select = '
         SELECT 
         
                -- atividade 
@@ -24,7 +25,7 @@ class AtividadeModel extends Model
             ON P.id = A.projeto_id
     ';
 
-    private $select_edit = '
+    protected $select_edit = '
         SELECT 
                -- atividade 
                A.id,
@@ -37,52 +38,4 @@ class AtividadeModel extends Model
           FROM ATIVIDADE A
          WHERE A.id = :id
     ';
-
-    //list
-    public function list($where = [])
-    {
-        if ($where) {
-            return $this->all($this->select_edit, $where);
-        }
-
-        return $this->all($this->select);
-    }
-
-    //insert
-    public function insert($line)
-    {
-        $insert = '
-            INSERT INTO ATIVIDADE 
-            ( projeto_id,  nome,  data_inicio,  data_fim) VALUES 
-            (:projeto_id, :nome, :data_inicio, :data_fim)
-        ';
-        return $this->prepExec($insert,  $line);
-    }
-
-    //delete
-    public function delete($where)
-    {
-        $delete = '
-            DELETE 
-              FROM ATIVIDADE
-             WHERE id = :id
-        ';
-
-        return $this->prepExec($delete, $where);
-    }
-
-    //update
-    public function update($line, $where)
-    {
-        $delete = '
-            UPDATE ATIVIDADE 
-               SET projeto_id  = :projeto_id,
-                   nome        = :nome,
-                   data_inicio = :data_inicio,
-                   data_fim    = :data_fim
-             WHERE id = :id
-        ';
-
-        return $this->prepExec($delete, array_merge($line, $where));
-    }
 }
