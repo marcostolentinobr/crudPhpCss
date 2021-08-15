@@ -1,34 +1,11 @@
 <?php
-require_once RAIZ . '/libs/Conexao.php';
-
+require_once __DIR__ . '/ProjetoModel.php';
 class Projeto extends Controller
 {
-
     private $descricao = 'Projetos';
-
-    //select
-    private $select = '
-        SELECT 
-        
-               -- projeto
-               P.id,
-               P.nome,
-               P.data_inicio,
-               P.data_fim,
-               P.data_concluido
-
-          FROM PROJETO P
-    ';
 
     public function insert()
     {
-
-        //qry
-        $insert = '
-            INSERT INTO PROJETO 
-            ( nome,  data_inicio,  data_fim) VALUES 
-            (:nome, :data_inicio, :data_fim)
-        ';
 
         //line
         $line = [
@@ -37,8 +14,8 @@ class Projeto extends Controller
             'data_fim'    => $_POST['data_fim'],
         ];
 
-        //exec
-        $exec = $this->Pdo->prepExec($insert,  $line);
+        $Model = new ProjetoModel();
+        $exec =  $Model->insert($line);
 
         //erro
         if ($exec['erro']) {
@@ -49,7 +26,7 @@ class Projeto extends Controller
             $this->setMsg(
                 'Projeto incluído com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
 
@@ -57,43 +34,54 @@ class Projeto extends Controller
         $this->list();
     }
 
-    public function update()
+    public function list()
     {
-        //qry
-        $delete = '
-        UPDATE PROJETO 
-           SET nome        = :nome,
-               data_inicio = :data_inicio,
-               data_fim    = :data_fim
-         WHERE id = :id';
 
-        //line
-        $line = [
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim']
-        ];
+        $Model = new ProjetoModel();
+        $all =  $Model->list();
+
+        //dados
+        $this->Dados = $all['dados'];
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $all['erro']);
+        }
+
+        //dado
+        $this->setDado();
+
+        //View
+        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
+    }
+
+    public function delete()
+    {
 
         //where
-        $where = ['id' => $_POST['id']];
+        $where = ['id' => CHAVE];
 
-        //exec
-        $exec = $this->Pdo->prepExec($delete, array_merge($line, $where));
+        $Model = new ProjetoModel();
+        $exec =  $Model->delete($where);
 
         //erro
         if ($exec['erro']) {
             $this->setMsg($this->msg_erro, 'red', $exec['erro']);
         }
-        //Não alterado
+        //Não encontrado
         elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg('Projeto não alterado, nada modificado', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Projeto não encontrado para excluir',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
             $this->setMsg(
-                'Projeto alterado com sucesso!',
+                'Projeto excluído com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
 
@@ -104,17 +92,12 @@ class Projeto extends Controller
     public function edit()
     {
 
-        //select
-        //### ATENÇÃO ### - melhorar performa-se aqui pois não precisa do join do select padrão
-        $select_edit = $this->select . '
-            WHERE P.id = :id
-        ';
-
         //where
         $where = ['id' => CHAVE];
 
         //all
-        $all = $this->Pdo->all($select_edit, $where);
+        $Model = new ProjetoModel();
+        $all = $Model->list($where);
 
         //dado
         $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : new stdClass());
@@ -125,7 +108,11 @@ class Projeto extends Controller
         }
         //Não encontrado
         elseif (count((array)$this->Dado) == 0) {
-            $this->setMsg('Projeto não encontrado para editar', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Projeto não encontrado para editar',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
@@ -138,69 +125,51 @@ class Projeto extends Controller
         $this->list();
     }
 
-    public function delete()
+    public function update()
     {
 
-        //qry
-        $delete = '
-            DELETE 
-              FROM PROJETO
-             WHERE id = :id
-        ';
+        //line
+        $line = [
+            'nome'        => trim($_POST['nome']),
+            'data_inicio' => $_POST['data_inicio'],
+            'data_fim'    => $_POST['data_fim']
+        ];
 
         //where
-        $where = ['id' => CHAVE];
+        $where = ['id' => $_POST['id']];
 
-        //exec
-        $exec = $this->Pdo->prepExec($delete, $where);
+        $Model = new ProjetoModel();
+        $exec =  $Model->update($line, $where);
 
         //erro
         if ($exec['erro']) {
             $this->setMsg($this->msg_erro, 'red', $exec['erro']);
-        } 
-        //Não encontrado
+        }
+        //Nada modificado
         elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg('Projeto não encontrado para excluir', 'red', '0 linhas encontradas');
+            $this->setMsg(
+                'Projeto não alterado, nada modificado',
+                'red',
+                $this->msg_nenhuma_linha_encontrada
+            );
         }
         //Sucesso
         else {
             $this->setMsg(
-                'Projeto excluído com sucesso!',
+                'Projeto alterado com sucesso!',
                 'green',
-                $exec['prep']->rowCount() . ' linhas afetadas'
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
             );
         }
-
 
         //list
         $this->list();
     }
 
-    public function list()
-    {
-
-        //dado
-        $this->setDado();
-
-        //all
-        $all = $this->Pdo->all($this->select);
-
-        //dados
-        $this->Dados = $all['dados'];
-
-        //erro
-        if ($all['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $all['erro']);
-        }
-
-        //View
-        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
-    }
-
     private function setDado()
     {
-
-        //Dado Projeto
+        
+        //Dado projeto
         $this->Dado->id          = isset($this->Dado->id)          ? $this->Dado->id          : '';
         $this->Dado->nome        = isset($this->Dado->nome)        ? $this->Dado->nome        : '';
         $this->Dado->data_inicio = isset($this->Dado->data_inicio) ? $this->Dado->data_inicio : '';
