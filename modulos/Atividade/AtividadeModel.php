@@ -24,16 +24,28 @@ class AtividadeModel extends Model
             ON P.id = A.projeto_id
     ';
 
+    private $select_edit = '
+        SELECT 
+               -- atividade 
+               A.id,
+               A.nome,
+               A.data_inicio,
+               A.data_fim,
+               A.data_concluido,
+               A.projeto_id       
+               
+          FROM ATIVIDADE A
+         WHERE A.id = :id
+    ';
+
     //list
     public function list($where = [])
     {
         if ($where) {
-            $this->select .= '
-                WHERE A.id = :id
-            ';
+            return $this->all($this->select_edit, $where);
         }
 
-        return $this->all($this->select, $where);
+        return $this->all($this->select);
     }
 
     //insert

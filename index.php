@@ -17,7 +17,14 @@
     <a href="<?= URL ?>Atividade/list">Atividades</a>
 
     <?php
-    
+
+    //Model
+    $fileModel = RAIZ . '/modulos/' . CLASSE . '/' . CLASSE . 'Model.php';
+    if (file_exists($fileModel)) {
+        require_once 'modulos/Model.php';
+        require_once $fileModel;
+    }
+
     //Controller
     $fileControler = RAIZ . '/modulos/' . CLASSE . '/' . CLASSE . '.php';
     if (file_exists($fileControler)) {

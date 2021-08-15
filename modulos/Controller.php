@@ -7,11 +7,33 @@ class Controller
     protected $acao = 'insert';
     protected $acao_descricao = 'Incluir';
     protected $msg;
-    protected $msg_erro = 'Não executou! Tente novamente. Se persistir entre em contato.';
-    protected $msg_nenhuma_linha_encontrada = 'Nenhuma linha encontrada';
+    protected $msg_padrao = [];
 
-    //Instancias
+    //Para edição
     protected $Dado;
+
+    //Instancia
+    private $Model;
+
+    private function setMsgPadrao()
+    {
+
+        $this->msg_padrao['execucao'] = 'Não executou! Tente novamente. Se persistir entre em contato.';
+        $this->msg_padrao['nenhuma'] = 'Nenhuma linha encontrada.';
+
+        if ($this->modulo_masculino) {
+            $this->msg_padrao['incluir'] = 'incluído';
+            $this->msg_padrao['alterar'] = 'alterado';
+            $this->msg_padrao['encontrar'] = 'encontrado';
+            $this->msg_padrao['excluir'] = 'excluído';
+        } else {
+            $this->msg_padrao['incluir'] = 'incluída';
+            $this->msg_padrao['alterar'] = 'alterada';
+            $this->msg_padrao['encontrar'] = 'encontrada';
+            $this->msg_padrao['excluir'] = 'excluída';
+        }
+    }
+
 
     public function __construct()
     {
@@ -24,6 +46,183 @@ class Controller
 
         //Dados
         $this->Dados = new stdClass();
+
+        //Model
+        $model = $this->modulo . 'Model';
+        $this->Model = new $model();
+
+        $this->setMsgPadrao();
+    }
+
+    public function insert()
+    {
+
+        //dados
+        $DADOS = $this->getDadosValida($_POST);
+
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
+        }
+        //sem erros de campo
+        else {
+
+            //exec
+            $exec =  $this->Model->insert($DADOS['dados']);
+
+            //erro
+            if ($exec['erro']) {
+                $msg = $this->msg_padrao['execucao'];
+                $cor = 'red';
+                $obs = $exec['erro'];
+            }
+            //sucesso
+            else {
+                $msg = "$this->descricao_singular {$this->msg_padrao['incluir']} com sucesso!";
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
+        }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
+
+        //list
+        $this->list();
+    }
+
+    public function list()
+    {
+        //all
+        $all =  $this->Model->list();
+
+        //dados
+        $this->Dados = $all['dados'];
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
+        }
+
+        //dado
+        $this->setDado();
+
+        //View
+        require_once RAIZ . "/modulos/$this->modulo/{$this->modulo}View.php";
+    }
+
+    public function delete()
+    {
+
+        //where
+        $where = [$this->chave => CHAVE];
+
+        //exec
+        $exec =  $this->Model->delete($where);
+
+        //erro
+        if ($exec['erro']) {
+            $this->setMsg($this->msg_padrao['execucao'], 'red', $exec['erro']);
+        }
+        //Não encontrado
+        elseif ($exec['prep']->rowCount() == 0) {
+            $this->setMsg(
+                "$this->descricao_singular não {$this->msg_padrao['encontrar']} para excluir",
+                'red',
+                $this->msg_padrao['nenhuma']
+            );
+        }
+        //Sucesso
+        else {
+            $this->setMsg(
+                "$this->descricao_singular {$this->msg_padrao['excluir']} com sucesso!",
+                'green',
+                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
+            );
+        }
+
+        //list
+        $this->list();
+    }
+
+    public function edit()
+    {
+
+        //where
+        $where = [$this->chave => CHAVE];
+
+        //all
+        $all = $this->Model->list($where);
+
+        //dado
+        $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : new stdClass());
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
+        }
+        //Não encontrado
+        elseif (count((array)$this->Dado) == 0) {
+            $this->setMsg(
+                "$this->descricao_singular não {$this->msg_padrao['encontrar']} para editar",
+                'red',
+                $this->msg_padrao['nenhuma']
+            );
+        }
+        //Sucesso
+        else {
+            //Params
+            $this->acao = 'update';
+            $this->acao_descricao = 'Alterar';
+        }
+
+        //list
+        $this->list();
+    }
+
+    public function update()
+    {
+
+        //line
+        $DADOS = $this->getDadosValida($_POST);
+
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
+        } else {
+            //where
+            $where = [$this->chave => $_POST['id']];
+
+            //exec
+            $exec =  $this->Model->update($DADOS['dados'], $where);
+
+            //erro
+            if ($exec['erro']) {
+                $this->setMsg($this->msg_padrao['execucao'], 'red', $exec['erro']);
+            }
+            //Nada modificado
+            elseif ($exec['prep']->rowCount() == 0) {
+                $msg = "$this->descricao_singular não {$this->msg_padrao['alterar']}, nada modificado.";
+                $cor = 'red';
+                $obs = $this->msg_padrao['nenhuma'];
+            }
+            //Sucesso
+            else {
+                $msg = "$this->descricao_singular {$this->msg_padrao['alterar']} com sucesso!";
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
+        }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
+
+        //list
+        $this->list();
     }
 
     //mensagem 
@@ -37,6 +236,14 @@ class Controller
         ";
     }
 
+   
+    protected function setDado()
+    {
+        foreach ($this->permitido as $col => $dados) {
+            $this->Dado->$col = isset($this->Dado->$col) ? $this->Dado->$col : '';
+        }
+    }
+
     protected function getMsgLinhaAfetada($number)
     {
         return "$number linhas afetada(s)";
@@ -46,11 +253,11 @@ class Controller
     {
         $erros = [];
         $campo = [];
-        
+
         foreach ($this->permitido as $col => $dados) {
             $params = explode('|', $dados['params']);
             $campo[$col] = isset($DADOS[$col]) ? $DADOS[$col] : null;
-            $campoValor = reticencias(trim($campo[$col]),10);
+            $campoValor = reticencias(trim($campo[$col]), 10);
             foreach ($params as $param) {
 
                 //required

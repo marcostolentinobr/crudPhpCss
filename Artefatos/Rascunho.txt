@@ -106,6 +106,7 @@ Talvez - Afazeres...
 *EXCEPTION TRADUZIR PORTUGUES
 *facilitar com array ao invez de stdClass
 *add id do camo nos erros para setar o campo
+*melhjorar model para não abrir conexao o tempo todo apenas se for utuilizar
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão
