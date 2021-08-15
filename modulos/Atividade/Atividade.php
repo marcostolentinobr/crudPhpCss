@@ -95,7 +95,7 @@ class Atividade extends Controller
         if ($exec['erro']) {
             $this->setMsg($this->msg_erro, 'red', $exec['erro']);
         }
-        //Não encontrado
+        //Nada modificado
         elseif ($exec['prep']->rowCount() == 0) {
             $this->setMsg('Atividade não alterada, nada modificado', 'red', '0 linhas encontradas');
         }

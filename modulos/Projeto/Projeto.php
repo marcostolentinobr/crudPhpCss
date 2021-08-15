@@ -1,56 +1,59 @@
 <?php
 require_once RAIZ . '/libs/Conexao.php';
 
-class Projeto /*extends Controller*/
+class Projeto extends Controller
 {
 
-    //Parametros
+    //Params
     private $modulo = __CLASS__;
-    private $descricao = 'Projeto';
-    private $descricao_plural = 'Projetos';
-    private $acao = 'insert';
-    private $acao_descricao = 'Incluir';
-
-    //Instancias
-    private $Pdo;
-    private $Dado;
+    private $descricao = 'Projetos';
 
     //select
     private $select = '
-        SELECT P.id,
+        SELECT 
+        
+               -- projeto
+               P.id,
                P.nome,
                P.data_inicio,
                P.data_fim,
-               P.data_concluido 
+               P.data_concluido
+
           FROM PROJETO P
     ';
-
-    function __construct()
-    {
-
-        $this->Pdo = new Conexao('EUAX');
-        $this->Dado = new stdClass();
-    }
 
     public function insert()
     {
 
-        //query
+        //qry
         $insert = '
             INSERT INTO PROJETO 
-            (nome ,  data_inicio,  data_fim) VALUES 
+            ( nome,  data_inicio,  data_fim) VALUES 
             (:nome, :data_inicio, :data_fim)
         ';
 
-        //execute
-        $execute = $this->Pdo->execute($insert, [
+        //line
+        $line = [
             'nome'        => trim($_POST['nome']),
             'data_inicio' => $_POST['data_inicio'],
             'data_fim'    => $_POST['data_fim'],
-        ]);
+        ];
 
-        //mensagem
-        echo mensagem_acao('insert', $execute['prepare']->rowCount());
+        //exec
+        $exec = $this->Pdo->prepExec($insert,  $line);
+
+        //erro
+        if ($exec['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+        }
+        //sucesso
+        else {
+            $this->setMsg(
+                'Projeto incluído com sucesso!',
+                'green',
+                $exec['prep']->rowCount() . ' linhas afetadas'
+            );
+        }
 
         //list
         $this->list();
@@ -58,7 +61,7 @@ class Projeto /*extends Controller*/
 
     public function update()
     {
-        //query
+        //qry
         $delete = '
         UPDATE PROJETO 
            SET nome        = :nome,
@@ -66,16 +69,35 @@ class Projeto /*extends Controller*/
                data_fim    = :data_fim
          WHERE id = :id';
 
-        //execute
-        $execute = $this->Pdo->execute($delete, [
+        //line
+        $line = [
             'nome'        => trim($_POST['nome']),
             'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim'],
-            'id'    => $_POST['id'],
-        ]);
+            'data_fim'    => $_POST['data_fim']
+        ];
 
-        //mensagem
-        echo mensagem_acao('update', $execute['prepare']->rowCount());
+        //where
+        $where = ['id' => $_POST['id']];
+
+        //exec
+        $exec = $this->Pdo->prepExec($delete, array_merge($line, $where));
+
+        //erro
+        if ($exec['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+        }
+        //Não alterado
+        elseif ($exec['prep']->rowCount() == 0) {
+            $this->setMsg('Projeto não alterado, nada modificado', 'red', '0 linhas encontradas');
+        }
+        //Sucesso
+        else {
+            $this->setMsg(
+                'Projeto alterado com sucesso!',
+                'green',
+                $exec['prep']->rowCount() . ' linhas afetadas'
+            );
+        }
 
         //list
         $this->list();
@@ -84,21 +106,35 @@ class Projeto /*extends Controller*/
     public function edit()
     {
 
-        //Parametros
-        $this->acao = 'update';
-        $this->acao_descricao = 'Alterar';
-
-        //where
+        //select
+        //### ATENÇÃO ### - melhorar performa-se aqui pois não precisa do join do select padrão
         $select_edit = $this->select . '
             WHERE P.id = :id
         ';
 
+        //where
+        $where = ['id' => CHAVE];
+
+        //all
+        $all = $this->Pdo->all($select_edit, $where);
+
         //dado
-        $this->Dado = $this->Pdo->fetchAll(
-            $select_edit,
-            ['id' => CHAVE],
-            true
-        );
+        $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : new stdClass());
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $all['erro']);
+        }
+        //Não encontrado
+        elseif (count((array)$this->Dado) == 0) {
+            $this->setMsg('Projeto não encontrado para editar', 'red', '0 linhas encontradas');
+        }
+        //Sucesso
+        else {
+            //Params
+            $this->acao = 'update';
+            $this->acao_descricao = 'Alterar';
+        }
 
         //list
         $this->list();
@@ -107,20 +143,36 @@ class Projeto /*extends Controller*/
     public function delete()
     {
 
-        //query
+        //qry
         $delete = '
             DELETE 
-              FROM PROJETO 
+              FROM PROJETO
              WHERE id = :id
         ';
 
-        //execute
-        $execute = $this->Pdo->execute($delete, [
-            'id' => CHAVE
-        ]);
+        //where
+        $where = ['id' => CHAVE];
 
-        //mensagem
-        echo mensagem_acao('delete', $execute['prepare']->rowCount());
+        //exec
+        $exec = $this->Pdo->prepExec($delete, $where);
+
+        //erro
+        if ($exec['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+        } 
+        //Não encontrado
+        elseif ($exec['prep']->rowCount() == 0) {
+            $this->setMsg('Projeto não encontrado para excluir', 'red', '0 linhas encontradas');
+        }
+        //Sucesso
+        else {
+            $this->setMsg(
+                'Projeto excluído com sucesso!',
+                'green',
+                $exec['prep']->rowCount() . ' linhas afetadas'
+            );
+        }
+
 
         //list
         $this->list();
@@ -129,20 +181,31 @@ class Projeto /*extends Controller*/
     public function list()
     {
 
-        try {
-            $Dados = $this->Pdo->fetchAll($this->select);
-        } catch (Exception $e) {
-            $Dados = new stdClass();
-            $Dados->msg = mensagem_acao('erro', $e->getMessage());
+        //dado
+        $this->setDado();
+
+        //all
+        $all = $this->Pdo->all($this->select);
+
+        //dados
+        $this->Dados = $all['dados'];
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_erro, 'red', $all['erro']);
         }
 
-        //Dado
+        //View
+        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
+    }
+
+    private function setDado()
+    {
+
+        //Dado Projeto
         $this->Dado->id          = isset($this->Dado->id)          ? $this->Dado->id          : '';
         $this->Dado->nome        = isset($this->Dado->nome)        ? $this->Dado->nome        : '';
         $this->Dado->data_inicio = isset($this->Dado->data_inicio) ? $this->Dado->data_inicio : '';
         $this->Dado->data_fim    = isset($this->Dado->data_fim)    ? $this->Dado->data_fim    : '';
-
-        //View
-        require_once __DIR__ . '/' . __CLASS__ . 'View.php';
     }
 }
