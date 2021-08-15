@@ -3,7 +3,7 @@ https://github.com/Artia/desafios-desevolvimento/blob/master/desafio-fullstack.m
 
 ===============================================================================
 Home
- Dashboard (???Relatórios???)
+ Dashboard
  
   Projetos 
    No prazo (Hoje < Início e sem atividade(s) concluída)
@@ -12,19 +12,15 @@ Home
    Atrasado (Hoje > Fim e não concluído)
    Completo (Concluído)
    
-  Atividades (???Filtros: Projetos / Situações de projetos???)
+  Atividades
    No prazo (Hoje < Início e não concluída)
    Pendente (Hoje entre (Início,Fim) e não concluída)
    Atrasada (Hoje > Fim e não concluída)
    Completa (Concluída)
-   
- Acompanhamento de desempenho
-  Atividades encerradas, prazos, dentro do esforço...
-  Ranking - Gamification, pontuações para as ações que realiza
-
+ 
 ===============================================================================
 Projetos
- Portifólio (???Relatórios???)
+ Portifólio
   
   Filtro Situações (Todas) 
   obs.: Vir 10 na ordenação indicada e clicar em mais
@@ -52,62 +48,11 @@ Projetos
     
    Observação
     Clique na projeto leva ao menu atividades
-    
- Acompanhamento de Entrega
-  
-   Título, prazo, início, término, atual, previsão, Situação
-   Gráfico com linha do tempo
-
+ 
 ===============================================================================
 Atividades
- Status Report (???Relatórios???)
+ Status Report
  
   ??? Seleciona projeto? Situação do projeto? Vindo de link? ???
   Mesmas situções que Dashboard->Atividades
   Listas ou cards
- 
-  Gráfico de Gant
-  Gráfico Curva S
-  Gráfico de Burdown
-  Gráfico Outros
-  
- Apontamento rápido Manual
- 
-  Filtros: Datas/Projetos, vindo de link...
-  ???Calendário com inicio e fim das atividades em coluna com as mesmas situações dos outros menus (Uma agenda)???
- 
- Gant Avançado - Cronograma
-  Mesmo que o anterior, mas possui graficos, demonstrando caminho crítico
-  Atividade,Início,Término,Esforço (Dias), Completo (%), Situação
-  
- Capacidade para novos projeotos/Alocação de equipe
- 
-Talvez - Afazeres...
-*Banco não relacional para:
- .Usuários (Qualquer um se cadastra com login simples sem camadas se segurança, acrescentar em banco o cpf do usuario de forma não obrigatoria em atividade e projeto);
- .Drag in drop;
- .Personalizações;
- .Último filtro;
-*Talvez nas tabelas gerar data_criação, data_alteração, usuario (não obrigatorio), data_exclusão (nunca excluir de verdade)
-*Apenas finalizar um projeto se todos as atividades estiverem finalizadas
-*Não acrescentar atividade se o projeto está finalizado
-*Não deixar concluir a insclusão de projeto caso não tenha alguma atividade, excluir na sequencia (commit rollback)
-*Ao finalizar a atividade que falta perguntar se quer finalizar o projeto o urever as atividades.
-*Usar flutter? Vue? Bootstrap? Angular?
-*Criar descrição para a atividade
-*trigger para progressos... store procedure...?
-*unique nome projeto?
-*usar use namespace..?
-*converter data para mostrar
-*validação de inclusão de datas
-*config bd via conexao
-*em conexao padronizar parametros
-*singleton para pdo
-*EXCEPTION TRADUZIR PORTUGUES
-*facilitar com array ao invez de stdClass
-*add id do camo nos erros para setar o campo
-*melhjorar model para não abrir conexao o tempo todo apenas se for utuilizar
-*não habiltiar o botao deexcluir caso habilitado
-
-Escopo - Mudanças...
-*Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão

@@ -3,9 +3,6 @@
 class ProjetoModel extends Model
 {
 
-    protected $tabela = 'PROJETO';
-
-    //select
     protected $select = '
         SELECT 
         

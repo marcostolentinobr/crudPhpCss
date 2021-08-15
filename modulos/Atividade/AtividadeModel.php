@@ -2,10 +2,6 @@
 
 class AtividadeModel extends Model
 {
-
-    protected $tabela = 'ATIVIDADE';
-
-    //select
     protected $select = '
         SELECT 
         

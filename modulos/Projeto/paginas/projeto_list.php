@@ -23,15 +23,15 @@
                 <tr>
 
                     <!-- dados -->
-                    <td><?= $dado->nome ?></td>
-                    <td><?= $dado->data_inicio ?></td>
-                    <td><?= $dado->data_fim ?></td>
-                    <td><?= $dado->data_concluido ?></td>
+                    <td><?= $dado['nome'] ?></td>
+                    <td><?= $dado['data_inicio'] ?></td>
+                    <td><?= $dado['data_fim'] ?></td>
+                    <td><?= $dado['data_concluido'] ?></td>
 
                     <!-- ações -->
                     <td>
-                        <a href="<?= $this->modulo ?>/edit/<?= $dado->id ?>">Editar</a>
-                        <a href="<?= $this->modulo ?>/delete/<?= $dado->id ?>">Excluir</a>
+                        <a href="<?= $this->modulo ?>/edit/<?= $dado['id'] ?>">Editar</a>
+                        <a href="<?= $this->modulo ?>/delete/<?= $dado['id'] ?>">Excluir</a>
                     </td>
 
                 </tr>

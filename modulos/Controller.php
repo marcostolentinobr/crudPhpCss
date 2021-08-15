@@ -10,48 +10,44 @@ class Controller
     protected $msg_padrao = [];
 
     //Para edição
-    protected $Dado;
+    protected $Dado = [];
+
+    //Para listagem
+    protected $Dados = [];
 
     //Instancia
     private $Model;
 
-    private function setMsgPadrao()
-    {
-
-        $this->msg_padrao['execucao'] = 'Não executou! Tente novamente. Se persistir entre em contato.';
-        $this->msg_padrao['nenhuma'] = 'Nenhuma linha encontrada.';
-
-        if ($this->modulo_masculino) {
-            $this->msg_padrao['incluir'] = 'incluído';
-            $this->msg_padrao['alterar'] = 'alterado';
-            $this->msg_padrao['encontrar'] = 'encontrado';
-            $this->msg_padrao['excluir'] = 'excluído';
-        } else {
-            $this->msg_padrao['incluir'] = 'incluída';
-            $this->msg_padrao['alterar'] = 'alterada';
-            $this->msg_padrao['encontrar'] = 'encontrada';
-            $this->msg_padrao['excluir'] = 'excluída';
-        }
-    }
-
-
     public function __construct()
     {
 
-        //modulo
+        //Modulo
         $this->modulo = get_called_class();
-
-        //Dado
-        $this->Dado = new stdClass();
-
-        //Dados
-        $this->Dados = new stdClass();
 
         //Model
         $model = $this->modulo . 'Model';
         $this->Model = new $model();
 
+        //Msg
         $this->setMsgPadrao();
+    }
+
+    public function list()
+    {
+        //all
+        $all =  $this->Model->list();
+        $this->Dados = $all['dados'];
+
+        //erro
+        if ($all['erro']) {
+            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
+        }
+
+        //dado
+        $this->setDado();
+
+        //View
+        require_once RAIZ . "/modulos/$this->modulo/{$this->modulo}View.php";
     }
 
     public function insert()
@@ -70,7 +66,7 @@ class Controller
         else {
 
             //exec
-            $exec =  $this->Model->insert($DADOS['dados']);
+            $exec =  $this->Model->insert($this->tabela, $DADOS['dados']);
 
             //erro
             if ($exec['erro']) {
@@ -86,41 +82,19 @@ class Controller
             }
         }
 
-        //msg
-        $this->setMsg($msg, $cor, $obs);
-
         //list
+        $this->setMsg($msg, $cor, $obs);
         $this->list();
     }
 
-    public function list()
-    {
-        //all
-        $all =  $this->Model->list();
 
-        //dados
-        $this->Dados = $all['dados'];
-
-        //erro
-        if ($all['erro']) {
-            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
-        }
-
-        //dado
-        $this->setDado();
-
-        //View
-        require_once RAIZ . "/modulos/$this->modulo/{$this->modulo}View.php";
-    }
 
     public function delete()
     {
 
-        //where
+        //delete
         $where = [$this->chave => CHAVE];
-
-        //exec
-        $exec =  $this->Model->delete($where);
+        $exec =  $this->Model->delete($this->tabela, $where);
 
         //erro
         if ($exec['erro']) {
@@ -150,21 +124,17 @@ class Controller
     public function edit()
     {
 
-        //where
-        $where = [$this->chave => CHAVE];
-
         //all
+        $where = [$this->chave => CHAVE];
         $all = $this->Model->list($where);
-
-        //dado
-        $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : new stdClass());
+        $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : []);
 
         //erro
         if ($all['erro']) {
             $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
         }
         //Não encontrado
-        elseif (count((array)$this->Dado) == 0) {
+        elseif (count($this->Dado) == 0) {
             $this->setMsg(
                 "$this->descricao_singular não {$this->msg_padrao['encontrar']} para editar",
                 'red',
@@ -185,7 +155,7 @@ class Controller
     public function update()
     {
 
-        //line
+        //dados
         $DADOS = $this->getDadosValida($_POST);
 
         //erros de campo
@@ -194,11 +164,10 @@ class Controller
             $cor = 'red';
             $obs = 'Verifique os dados';
         } else {
-            //where
-            $where = [$this->chave => $_POST['id']];
 
-            //exec
-            $exec =  $this->Model->update($DADOS['dados'], $where);
+            //update
+            $where = [$this->chave => $_POST['id']];
+            $exec =  $this->Model->update($this->tabela, $DADOS['dados'], $where);
 
             //erro
             if ($exec['erro']) {
@@ -218,10 +187,8 @@ class Controller
             }
         }
 
-        //msg
-        $this->setMsg($msg, $cor, $obs);
-
         //list
+        $this->setMsg($msg, $cor, $obs);
         $this->list();
     }
 
@@ -236,11 +203,11 @@ class Controller
         ";
     }
 
-
     protected function setDado()
     {
+        $this->Dado[$this->chave] = isset($this->Dado[$this->chave]) ? $this->Dado[$this->chave] : '';
         foreach ($this->permitido as $col => $dados) {
-            $this->Dado->$col = isset($this->Dado->$col) ? $this->Dado->$col : '';
+            $this->Dado[$col] = isset($this->Dado[$col]) ? $this->Dado[$col] : '';
         }
     }
 
@@ -263,7 +230,7 @@ class Controller
                 //required
                 if ($param == 'required' && empty(trim($campo[$col]))) {
                     $erros[] = "Campo '$dados[descricao]' é obrigatório";
-                    //break;
+                    break;
                 }
 
                 //trim
@@ -303,5 +270,23 @@ class Controller
     private function addPagina($pagina)
     {
         require_once RAIZ . "/modulos/$this->modulo/paginas/" . strtolower($this->modulo) . "_$pagina.php";
+    }
+
+    private function setMsgPadrao()
+    {
+        $this->msg_padrao['execucao'] = 'Não executou! Tente novamente. Se persistir entre em contato.';
+        $this->msg_padrao['nenhuma'] = 'Nenhuma linha encontrada.';
+
+        if ($this->modulo_masculino) {
+            $this->msg_padrao['incluir'] = 'incluído';
+            $this->msg_padrao['alterar'] = 'alterado';
+            $this->msg_padrao['encontrar'] = 'encontrado';
+            $this->msg_padrao['excluir'] = 'excluído';
+        } else {
+            $this->msg_padrao['incluir'] = 'incluída';
+            $this->msg_padrao['alterar'] = 'alterada';
+            $this->msg_padrao['encontrar'] = 'encontrada';
+            $this->msg_padrao['excluir'] = 'excluída';
+        }
     }
 }

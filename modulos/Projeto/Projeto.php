@@ -6,6 +6,7 @@ class Projeto extends Controller
     protected $descricao_singular = 'Projeto';
     protected $modulo_masculino = true;
     protected $chave = 'id';
+    protected $tabela = 'PROJETO';
 
     protected $permitido = [
 

@@ -6,6 +6,7 @@ class Atividade extends Controller
     protected $descricao_singular = 'Atividade';
     protected $modulo_masculino = false;
     protected $chave = 'id';
+    protected $tabela = 'ATIVIDADE';
 
     protected $permitido = [
 

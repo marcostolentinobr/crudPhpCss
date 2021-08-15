@@ -29,12 +29,14 @@ function init()
   define('URL', $url);
 }
 
+//data validade
 function dataValida($date, $format = 'Y-m-d H:i:s')
 {
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
 
+//reticencias
 function reticencias($descricao, $tamanhoMaximo)
 {
   if (strlen($descricao) > $tamanhoMaximo) {
