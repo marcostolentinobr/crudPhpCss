@@ -14,20 +14,32 @@ class ProjetoModel extends Model
                P.data_inicio,
                P.data_fim,
                P.data_concluido
-
+     
           FROM PROJETO P
+    ';
+
+    private $select_edit = '
+        SELECT 
+               -- atividade 
+               P.id,
+               P.nome,
+               P.data_inicio,
+               P.data_fim,
+               P.data_concluido,
+               P.projeto_id       
+               
+          FROM PROPJETO P
+         WHERE P.id = :id
     ';
 
     //list
     public function list($where = [])
     {
         if ($where) {
-            $this->select .= '
-                WHERE P.id = :id
-            ';
+            return $this->all($this->select_edit, $where);
         }
 
-        return $this->all($this->select, $where);
+        return $this->all($this->select);
     }
 
     //insert
