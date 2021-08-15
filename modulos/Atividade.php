@@ -4,16 +4,21 @@ $Pdo = new Conexao('EUAX');
 
 //select
 $select = '
-    SELECT P.id,
-           P.nome,
-           P.data_inicio,
-           P.data_fim,
-           P.data_concluido 
-      FROM PROJETO P
+    SELECT A.id,
+           A.nome,
+           A.data_inicio,
+           A.data_fim,
+           A.data_concluido,
+           
+           P.id as projeto_id,
+           P.nome as projeto_nome
+      FROM ATIVIDADE A
+      JOIN PROJETO P
+        ON P.id = A.projeto_id
 ';
 
 $MODULO = [
-    'descricao' => 'Projetos',
+    'descricao' => 'Atividades',
     'acao' => 'insert',
     'acao_descricao' => 'Incluir'
 ];
@@ -26,18 +31,20 @@ try {
 
         //query
         $insert = '
-            INSERT INTO PROJETO 
-            (nome ,  data_inicio,  data_fim) VALUES 
-            (:nome, :data_inicio, :data_fim)
+            INSERT INTO ATIVIDADE 
+            (projeto_id, nome ,  data_inicio,  data_fim) VALUES 
+            (:projeto_id, :nome, :data_inicio, :data_fim)
         ';
 
         //execute
         $execute = $Pdo->execute($insert, [
+            'projeto_id'  => $_POST['projeto_id'],
             'nome'        => trim($_POST['nome']),
             'data_inicio' => $_POST['data_inicio'],
             'data_fim'    => $_POST['data_fim'],
         ]);
 
+        //mensagem
         echo mensagem_acao('insert', $execute['prepare']->rowCount());
     }
     //delete
@@ -46,7 +53,7 @@ try {
         //query
         $delete = '
             DELETE 
-              FROM PROJETO 
+              FROM ATIVIDADE 
              WHERE id = :id
         ';
 
@@ -63,18 +70,20 @@ try {
 
         //query
         $delete = '
-            UPDATE PROJETO 
-               SET nome        = :nome,
+            UPDATE ATIVIDADE 
+               SET projeto_id  = :projeto_id, 
+                   nome        = :nome,
                    data_inicio = :data_inicio,
                    data_fim    = :data_fim
              WHERE id = :id';
 
         //execute
         $execute = $Pdo->execute($delete, [
+            'projeto_id'  => $_POST['projeto_id'],
             'nome'        => trim($_POST['nome']),
             'data_inicio' => $_POST['data_inicio'],
             'data_fim'    => $_POST['data_fim'],
-            'id'    => $_POST['id'],
+            'id'          => $_POST['id']
         ]);
 
         //mensagem
@@ -87,7 +96,7 @@ try {
 
         //where
         $select_edit = $select . '
-            WHERE P.id = :id
+            WHERE A.id = :id
         ';
 
         //dado
@@ -105,7 +114,12 @@ try {
     $Dados = $Pdo->fetchAll($select);
 } catch (Exception $e) {
     $Dados = new stdClass();
-    $Dados->msg = mensagem_acao('erro', $e->getMessage());
+    $Dados->msg = " 
+        <h2 style='color: red'>
+            Não listou! Tente novamente. Se persistir entre em contato.<br>
+            <small style='font-size: 10px; color: silver'>{$e->getMessage()}</small>
+        </h2>
+    ";
 }
 
 if (!isset($Dado)) {
@@ -114,6 +128,7 @@ if (!isset($Dado)) {
 
 //Dado para edição
 $Dado->id          = isset($Dado->id)          ? $Dado->id          : '';
+$Dado->projeto_id  = isset($Dado->projeto_id)  ? $Dado->projeto_id  : '';
 $Dado->nome        = isset($Dado->nome)        ? $Dado->nome        : '';
 $Dado->data_inicio = isset($Dado->data_inicio) ? $Dado->data_inicio : '';
 $Dado->data_fim    = isset($Dado->data_fim)    ? $Dado->data_fim    : '';
@@ -124,6 +139,11 @@ $Dado->data_fim    = isset($Dado->data_fim)    ? $Dado->data_fim    : '';
 
     <!-- id -->
     <input name="id" value="<?= $Dado->id ?>" hidden>
+
+    <!-- nome -->
+    <label for="nome">Projeto:</label><br>
+    <input name="projeto_id" id="projeto_id" type="text" value="<?= $Dado->projeto_id ?>" required>
+    <br><br>
 
     <!-- nome -->
     <label for="nome">Nome:</label><br>
@@ -153,6 +173,7 @@ $Dado->data_fim    = isset($Dado->data_fim)    ? $Dado->data_fim    : '';
 
         <!-- cabeçalho -->
         <th>Projeto</th>
+        <th>Atividade</th>
         <th>Início</th>
         <th>Fim</th>
         <th>Concluído</th>
@@ -174,6 +195,7 @@ $Dado->data_fim    = isset($Dado->data_fim)    ? $Dado->data_fim    : '';
                 <tr>
 
                     <!-- dados -->
+                    <td><?= $dado->projeto_nome ?></td>
                     <td><?= $dado->nome ?></td>
                     <td><?= $dado->data_inicio ?></td>
                     <td><?= $dado->data_fim ?></td>

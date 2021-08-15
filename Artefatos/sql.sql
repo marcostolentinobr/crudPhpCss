@@ -11,7 +11,7 @@ CREATE TABLE PROJETO (
 
 CREATE TABLE ATIVIDADE (
                 id BIGINT AUTO_INCREMENT NOT NULL,
-                PROJETO_id INT NOT NULL,
+                projeto_id INT NOT NULL,
                 nome VARCHAR(50) NOT NULL,
                 data_inicio DATE NOT NULL,
                 data_fim DATE NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE ATIVIDADE (
 );
 
 ALTER TABLE ATIVIDADE ADD CONSTRAINT projeto_atividade_fk
-FOREIGN KEY (PROJETO_id)
+FOREIGN KEY (projeto_id)
 REFERENCES PROJETO (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
