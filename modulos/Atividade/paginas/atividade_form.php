@@ -10,7 +10,7 @@
 
     <!-- nome -->
     <label for="nome">Nome:</label><br>
-    <input name="nome" id="nome" type="text" value="<?= $this->Dado->nome ?>" required>
+    <input name="nome" id="nome" type="text" maxlength="50" value="<?= $this->Dado->nome ?>" required>
     <br><br>
 
     <!-- data_inicio -->

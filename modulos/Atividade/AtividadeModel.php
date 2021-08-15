@@ -24,17 +24,6 @@ class AtividadeModel extends Model
             ON P.id = A.projeto_id
     ';
 
-    //insert
-    public function insert($line)
-    {
-        $insert = '
-            INSERT INTO ATIVIDADE 
-            ( projeto_id,  nome,  data_inicio,  data_fim) VALUES 
-            (:projeto_id, :nome, :data_inicio, :data_fim)
-        ';
-        return $this->Pdo->prepExec($insert,  $line);
-    }
-
     //list
     public function list($where = [])
     {
@@ -44,7 +33,18 @@ class AtividadeModel extends Model
             ';
         }
 
-        return $this->Pdo->all($this->select, $where);
+        return $this->all($this->select, $where);
+    }
+
+    //insert
+    public function insert($line)
+    {
+        $insert = '
+            INSERT INTO ATIVIDADE 
+            ( projeto_id,  nome,  data_inicio,  data_fim) VALUES 
+            (:projeto_id, :nome, :data_inicio, :data_fim)
+        ';
+        return $this->prepExec($insert,  $line);
     }
 
     //delete
@@ -56,7 +56,7 @@ class AtividadeModel extends Model
              WHERE id = :id
         ';
 
-        return $this->Pdo->prepExec($delete, $where);
+        return $this->prepExec($delete, $where);
     }
 
     //update
@@ -71,6 +71,6 @@ class AtividadeModel extends Model
              WHERE id = :id
         ';
 
-        return $this->Pdo->prepExec($delete, array_merge($line, $where));
+        return $this->prepExec($delete, array_merge($line, $where));
     }
 }

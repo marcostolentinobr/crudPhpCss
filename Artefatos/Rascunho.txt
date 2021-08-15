@@ -104,6 +104,8 @@ Talvez - Afazeres...
 *em conexao padronizar parametros
 *singleton para pdo
 *EXCEPTION TRADUZIR PORTUGUES
+*facilitar com array ao invez de stdClass
+*add id do camo nos erros para setar o campo
 
 Escopo - Mudanças...
 *Alterado o escopo original da tabela projeto e atividades, acrescentado data de conclusão em projeto e ao invés de booleano na finalização da atividade usado data de conclusão

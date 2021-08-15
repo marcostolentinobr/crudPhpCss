@@ -9,7 +9,7 @@ class Conexao extends PDO
     private $user = 'root';
     private $pass = '';
     private $charset = 'utf8mb4';
-    private $pdo;
+    protected $Pdo;
 
     function __construct($dbname, $driver = '', $host = '', $user = '', $pass = '', $charset = '')
     {
@@ -20,13 +20,13 @@ class Conexao extends PDO
         $this->setPass($pass);
         $this->setCharset($charset);
 
-        $this->pdo = parent::__construct(
+        $this->Pdo = parent::__construct(
             "$this->driver:host=$this->host;dbname=$this->dbname;charset=$this->charset",
             $this->user,
             $this->pass
         );
 
-        return $this->pdo;
+        return $this->Pdo;
     }
 
     public function all($qry, $params = [], $fetch = PDO::FETCH_OBJ)

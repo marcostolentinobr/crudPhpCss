@@ -3,33 +3,66 @@ require_once __DIR__ . '/AtividadeModel.php';
 class Atividade extends Controller
 {
     private $descricao = 'Atividades';
+    protected $permitido = [
+
+        //projeto_id
+        'projeto_id' => [
+            'descricao' => 'Projeto',
+            'params'    => 'required|numeric'
+        ],
+
+        //nome
+        'nome' => [
+            'descricao' => 'Nome',
+            'params'    => 'required|trim|max:50'
+        ],
+
+        //data_inicio
+        'data_inicio' => [
+            'descricao' => 'Início',
+            'params'    => 'required|date:Y-m-d'
+        ],
+
+        //data_fim
+        'data_fim' => [
+            'descricao' => 'Fim',
+            'params' => 'required|date:Y-m-d'
+        ]
+    ];
 
     public function insert()
     {
 
-        //line
-        $line = [
-            'projeto_id'  => $_POST['projeto_id'],
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim'],
-        ];
+        //dados
+        $DADOS = $this->getDadosValida($_POST);
 
-        $Model = new AtividadeModel();
-        $exec =  $Model->insert($line);
-
-        //erro
-        if ($exec['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
         }
-        //sucesso
+        //sem erros de campo
         else {
-            $this->setMsg(
-                'Atividade incluída com sucesso!',
-                'green',
-                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
-            );
+            $Model = new AtividadeModel();
+            $exec =  $Model->insert($DADOS['dados']);
+
+            //erro
+            if ($exec['erro']) {
+                $msg = $this->msg_erro;
+                $cor = 'red';
+                $obs = $exec['erro'];
+            }
+            //sucesso
+            else {
+                $msg = 'Atividade incluída com sucesso!';
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
         }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
 
         //list
         $this->list();
@@ -130,39 +163,40 @@ class Atividade extends Controller
     {
 
         //line
-        $line = [
-            'projeto_id'  => trim($_POST['projeto_id']),
-            'nome'        => trim($_POST['nome']),
-            'data_inicio' => $_POST['data_inicio'],
-            'data_fim'    => $_POST['data_fim']
-        ];
+        $DADOS = $this->getDadosValida($_POST);
 
-        //where
-        $where = ['id' => $_POST['id']];
+        //erros de campo
+        if ($DADOS['erros']) {
+            $msg = '<li>' . implode('<li>', $DADOS['erros']);
+            $cor = 'red';
+            $obs = 'Verifique os dados';
+        } else {
+            //where
+            $where = ['id' => $_POST['id']];
 
-        $Model = new AtividadeModel();
-        $exec =  $Model->update($line, $where);
+            $Model = new AtividadeModel();
+            $exec =  $Model->update($DADOS['dados'], $where);
 
-        //erro
-        if ($exec['erro']) {
-            $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+            //erro
+            if ($exec['erro']) {
+                $this->setMsg($this->msg_erro, 'red', $exec['erro']);
+            }
+            //Nada modificado
+            elseif ($exec['prep']->rowCount() == 0) {
+                $msg = 'Atividade não alterada, nada modificado';
+                $cor = 'red';
+                $obs = $this->msg_nenhuma_linha_encontrada;
+            }
+            //Sucesso
+            else {
+                $msg = 'Atividade alterada com sucesso!';
+                $cor = 'green';
+                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+            }
         }
-        //Nada modificado
-        elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg(
-                'Atividade não alterada, nada modificado',
-                'red',
-                $this->msg_nenhuma_linha_encontrada
-            );
-        }
-        //Sucesso
-        else {
-            $this->setMsg(
-                'Atividade alterada com sucesso!',
-                'green',
-                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
-            );
-        }
+
+        //msg
+        $this->setMsg($msg, $cor, $obs);
 
         //list
         $this->list();
