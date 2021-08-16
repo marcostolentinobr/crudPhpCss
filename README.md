@@ -1,75 +1,68 @@
-# sensedia
+# euax
+
+# Solução para acompanhar suas entregas.
 
 ## Problema
 
-* CRUD para usuários; 
-* PHP e Mysql; 
+Criar um cadastro de projetos com a data de início e data final para a entrega, esse projeto deve pode ter 1 ou N atividades que também precisam ser cadastradas com as datas de início e data de fim. Após ter feito todos os cadastros precisamos saber quantos % dos projetos já temos finalizados e também se o projeto terá atrasos ou não. Para saber a % de andamento do projeto deve ser considerado o número de atividades finalizadas e quantidade de atividades ainda sem finalizar. Para saber se o projeto terá atraso considere a maior data final das atividades e compare com a data final do projeto, se for maior que a data final, o projeto terminará com atrasos. Abaixo segue tabelas para cadastros.
 
-#### Pessoa - Tabela
+#### Tabela Projetos
+| Campo           | Tipo    | Obrigatório  |
+| :-------------- | :-----: | -----------: |
+| Nome do Projeto | Texto   | Sim          |
+| Data Início     | Data    | Sim          |
+| Data de fim     | Data    | Sim          |
+| *Data concluído | Data    | Não          |
 
-| Campo          | Tipo         | Outros   |
-| :------------- | :----------: | -------: |
-| PessoaId       | bigint       | PK, AUTO |
-| PrimeiroNome   | varchar(255) | NOT NULL |
-| SegundoNome    | varchar(255) | NOT NULL |
-| Endereco       | varchar(255) | NOT NULL |
-| CidadeId       | smallint     | NOT NULL |
-| DataNascimento | date         | NOT NULL |
-| DataCadastro   | datetime     | NOT NULL |
-| Status         | CHAR(1)      | NOT NULL |
+#### Tabela Atividades
+| Campo             | Tipo    | Obrigatório  |
+| :--------------   | :-----: | -----------: |
+| ID do Projeto     | Inteiro | Sim          |
+| Nome da Atividade | Texto   | Sim          |
+| Data Início       | Data    | Sim          |
+| Data de fim       | Data    | Sim          |
+| *Data concluída   | data    | Não          |
 
-* obs.: Status: 1 para ativo e 2 para inativo; 
+## Simulações
 
-#### Cidade - Tabela
+#### Simulação 1
 
-| Campo      | Tipo         | Outros   |
-| :--------- | :----------: | -------: |
-| CidadeId   | smallint     | PK, AUTO |
-| CidadeDesc | varchar(255) | NOT NULL |
+| ID Projeto | Nome Projeto | Data Inicio | Data Fim   | % Completo | Atrasado |
+| :--------- | :----------: | ----------: | ---------: | ---------: | -------: |
+| 1          | Projeto 1    | 01/01/2019  | 31/01/2019 | 50%        | Não      |
 
-* Script para povoar com as cidades:
+| ID Atividade | ID Projeto | Nome Atividade | Data Inicio | Data Fim   | Finalizada? |
+| :---------- | :---------: | -------------: | ----------: | ---------: | ----------: |
+| 1          | 1            | Atividade 1    | 06/01/2019  | 15/01/2019 | Sim                 |
+| 2          | 1            | Atividade 2    | 16/01/2019  | 31/01/2019 | Não                 |
 
-. São Paulo; 
-. Rio de Janeiro; 
-. Salvador; 
-. Pernambuco; 
-. Lapa; 
-. São Carlos; 
-. Rondonópolis; 
-. Bragança Paulista; 
+#### Simulação 2
 
-### Usuário - Tela 
+| ID Projeto | Nome Projeto | Data Inicio | Data Fim   | % Completo | Atrasado |
+| :--------- | :----------: | ----------: | ---------: | ---------: | -------: |
+| 2          | Projeto 2    | 01/02/2019  | 28/02/2019 | 0%         | Sim      |
 
-* Novo usuário+ (Ícone bonequinho) 
-* Buscar
-* ID | Nome             | Nascimento | Endereço      | Cidade   | Status        | Edit, Delete
-* 1  | Marcos Tolentino | 22/03/1991 | Rua Koesa 415 | Imbituba | Ativo (Verde) | Edit, Delete
-* Obs.: Inativo (Vermelho)
-* Obs.: Mais informações Artefatos/sensedia.docx  
+| ID Atividade | ID Projeto | Nome Atividade | Data Inicio | Data Fim   | Finalizada? |
+| :---------- | :---------: | -------------: | ----------: | ---------: | ----------: |
+| 1          | 2            | Atividade 1    | 01/02/2019  | 10/02/2019 | Não                 |
+| 2          | 2            | Atividade 2    | 11/02/2019  | 20/02/2019 | Não                 |
+| 3          | 2            | Atividade 3    | 21/02/2019  | 02/03/2019 | Não                 |
 
-### Usuário - cadastro/edição
+## Conclusão
+???? Explicar o funcionamento e tecnologias ????;
 
-* Primeiro Nome      | Segundo Nome
-* Endereço           | Cidade
-* Data de Nascimento | Status (Ativo/Inativo)
-* Salvar, Cancelar 
-Obs.: Exemplo de cadastro e edição em Artefatos/sensedia.docx
+## Usar
+* PHP;
+* Mysql;
 
-### Conclusão
+* ??? SOLID ???;
+* ??? PHPUnit (Testes automatizados) ???;
+* ???Docker (Ambiente)???;
 
-* Analise de Back end;
-* Flexibilidade de formato e estrutura;
-* Subir para repositório com o banco e scrips
-* Lembrar do script de cidades;
+* ??? Seguir praticas de código limpo ???;
+* ??? Constantes melhorias ???;
+* ??? Melhorar a performance do produto ???;
 
-### Como Rodar
-
-1ª Foi usado "PDO" no PHP 8 e Mysql 8. Garantir que o PDO esteja 
-   habilitado/instalado. Verifique o php.ini; 
-
-2ª Crar um banco e executar o script.sql localizado na pasta Artefatos
-   obs.: Comentado a execução do banco chaamado SENSEDIA, caso queira usar; 
-
-3ª Configurar o arquivo config.php com os dados do banco;
-
-4ª Rodar
+* ??? TDD ???;
+* ??? MVC ???;
+* ??? DDD ???;

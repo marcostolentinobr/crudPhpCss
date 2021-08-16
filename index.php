@@ -9,6 +9,13 @@
 </header>
 
 <body>
+
+    <!-- menu -->
+    <strong>EUAX</strong> |
+    <a href="<?= URL ?>">Início</a> |
+    <a href="<?= URL ?>Projeto/list">Projetos</a> |
+    <a href="<?= URL ?>Atividade/list">Atividades</a>
+
     <!-- instanciar controller -->
     <?php require_once __DIR__ . '/modulos/View.php' ?>
 </body>

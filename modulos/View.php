@@ -27,5 +27,10 @@ if (class_exists($Classe)) {
 }
 //Não existe classe
 else {
-    header('Location: Pessoa/list');
+    echo '
+          <p>
+              1ª -> Cadastro o projeto<br>
+              2ª -> Cadastre a atividade
+          </p>
+      ';
 }
