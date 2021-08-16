@@ -16,7 +16,7 @@ class Controller
     protected $Dados = [];
 
     //Instancia
-    private $Model;
+    protected $Model;
 
     public function __construct()
     {
@@ -166,7 +166,7 @@ class Controller
         } else {
 
             //update
-            $where = [$this->chave => $_POST['id']];
+            $where = [$this->chave => $_POST[$this->chave]];
             $exec =  $this->Model->update($this->tabela, $DADOS['dados'], $where);
 
             //erro
