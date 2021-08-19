@@ -8,31 +8,55 @@ class Atividade extends Controller
     protected $chave = 'id';
     protected $tabela = 'ATIVIDADE';
 
-    protected $permitido = [
+    protected $estrutura = [
 
-        //projeto_id
+        //projeto_id - manutencao
         'projeto_id' => [
             'descricao' => 'Projeto',
             'params'    => 'required|numeric'
         ],
 
-        //nome
-        'nome' => [
-            'descricao' => 'Nome',
-            'params'    => 'required|trim|max:50'
+        //projeto_nome
+        'projeto_nome' => [
+            'descricao' => 'Projeto',
+            'datatable'    => 0
         ],
 
-        //data_inicio
+        //nome - manutencao
+        'nome' => [
+            'descricao' => 'Nome',
+            'params'    => 'required|trim|max:50',
+            'datatable'    => 1
+        ],
+
+        //data_inicio - manutencao
         'data_inicio' => [
             'descricao' => 'Início',
             'params'    => 'required|date:Y-m-d'
         ],
 
-        //data_fim
+        //dt_inicio_desc
+        'dt_inicio_desc' => [
+            'descricao' => 'Início',
+            'datatable'    => '2|no-sort'
+        ],
+
+        //data_fim - manutencao
         'data_fim' => [
             'descricao' => 'Fim',
             'params' => 'required|date:Y-m-d'
+        ],
+
+        //dt_fim_desc
+        'dt_fim_desc' => [
+            'descricao' => 'Fim',
+            'datatable'    => '3|no-sort'
+        ],
+
+        //dt_concluido_desc
+        'dt_concluido_desc' => [
+            'descricao' => 'Concluído',
+            'datatable'    => '4|no-sort'
         ]
     ];
-    
 }

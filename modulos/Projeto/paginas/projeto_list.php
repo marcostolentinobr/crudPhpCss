@@ -35,7 +35,7 @@
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: 'api/Pessoa/datatable'
+                url: 'api/<?= $this->modulo ?>/datatable'
             }
         });
         //fim datatable

@@ -8,7 +8,7 @@ class Projeto extends Controller
     protected $chave = 'id';
     protected $tabela = 'PROJETO';
 
-    protected $permitido = [
+    protected $estrutura = [
 
         //nome
         'nome' => [
