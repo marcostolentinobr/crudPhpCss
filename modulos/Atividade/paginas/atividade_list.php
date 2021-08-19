@@ -1,43 +1,44 @@
-<table border="1">
+<!-- datatable -->
+<link rel='stylesheet' href='https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css'>
+
+<table id='<?= $this->modulo ?>Datatable' class='display cell-border'>
     <thead>
-
-        <!-- cabeçalho -->
-        <th>Projeto</th>
-        <th>Atividade</th>
-        <th>Início</th>
-        <th>Fim</th>
-        <th>Concluído</th>
-        <th>Ações</th>
-
+        <?= $this->datatableTh ?>
     </thead>
-    <tbody>
-
-        <!-- Sem dados -->
-        <?php if (count((array)$this->Dados) == 0) : ?>
-            <tr>
-                <td colspan="100%">Sem dados para listar</td>
-            </tr>
-        <?php else : ?>
-
-            <!-- loop de dados -->
-            <?php foreach ($this->Dados as $dado) : ?>
-                <tr>
-
-                    <!-- dados -->
-                    <td><?= $dado['projeto_nome'] ?></td>
-                    <td><?= $dado['nome'] ?></td>
-                    <td><?= $dado['data_inicio'] ?></td>
-                    <td><?= $dado['data_fim'] ?></td>
-                    <td><?= $dado['data_concluido'] ?></td>
-
-                    <!-- ações -->
-                    <td>
-                        <a href="<?= $this->modulo ?>/edit/<?= $dado['id'] ?>">Editar</a>
-                        <a href="<?= $this->modulo ?>/delete/<?= $dado['id'] ?>">Excluir</a>
-                    </td>
-
-                </tr>
-            <?php endforeach ?>
-        <?php endif ?>
-    </tbody>
+    <tfoot>
+        <?= $this->datatableTh ?>
+    </tfoot>
 </table>
+
+<!-- jquery -->
+<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+
+<!-- datatable -->
+<script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
+
+<script>
+    $(document).ready(function() {
+
+        //datatable
+        $('#<?= $this->modulo ?>Datatable').DataTable({
+            order: [
+                [<?= $this->datatableSortDefalt ?>, 'desc']
+            ],
+            columnDefs: [{
+                orderable: false,
+                targets: [<?= implode(',', $this->datatableNoSort) ?>]
+            }],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+            },
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: 'api/Pessoa/datatable'
+            }
+        });
+        //fim datatable
+
+    });
+</script>
