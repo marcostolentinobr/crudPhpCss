@@ -27,7 +27,7 @@ class Atividade extends Controller
 
         //nome - manutencao
         'nome' => [
-            'descricao' => 'Nome',
+            'descricao' => 'Atividade',
             'params'    => 'required|trim|max:50',
             'datatable'    => 1
         ],
@@ -65,7 +65,7 @@ class Atividade extends Controller
 
     public function list()
     {
-        $this->ProjetoDados = $this->Model->getProjetos();
+        $this->CidadeDados = $this->Model->getList('Projeto');
         parent::list();
     }
 }

@@ -1,11 +1,10 @@
 <?php
 
-class Controller
+class Controller extends Api
 {
     //Parametros
     protected $modulo;
     protected $acao = 'insert';
-    protected $acao_descricao = 'Incluir';
     protected $msg;
     protected $msg_padrao = [];
 
@@ -17,12 +16,6 @@ class Controller
 
     //Instancia
     protected $Model;
-
-    //datatable
-    protected $datatable;
-    protected $datatableTh;
-    protected $datatableNoSort = [];
-    protected $datatableSortDefalt = 0;
 
     public function __construct()
     {
@@ -46,13 +39,14 @@ class Controller
 
         //erro
         if ($all['erro']) {
-            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
+            $this->setMsg($this->msg_padrao['execucao'], 'danger', $all['erro']);
         }
 
         //dado
         $this->setDado();
 
         //View
+        $this->addPagina('form');
         require_once RAIZ . "/modulos/$this->modulo/{$this->modulo}View.php";
     }
 
@@ -65,7 +59,7 @@ class Controller
         //erros de campo
         if ($DADOS['erros']) {
             $msg = '<li>' . implode('<li>', $DADOS['erros']);
-            $cor = 'red';
+            $style = 'danger';
             $obs = 'Verifique os dados';
         }
         //sem erros de campo
@@ -77,87 +71,22 @@ class Controller
             //erro
             if ($exec['erro']) {
                 $msg = $this->msg_padrao['execucao'];
-                $cor = 'red';
+                $style = 'danger';
                 $obs = $exec['erro'];
             }
             //sucesso
             else {
                 $msg = "$this->descricao_singular {$this->msg_padrao['incluir']} com sucesso!";
-                $cor = 'green';
-                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+                $style = 'success';
+                $obs = $this->getMsgLinha($exec['prep']->rowCount());
             }
         }
 
         //list
-        $this->setMsg($msg, $cor, $obs);
+        $this->setMsg($msg, $style, $obs);
         $this->list();
     }
-
-
-
-    public function delete()
-    {
-
-        //delete
-        $where = [$this->chave => CHAVE];
-        $exec =  $this->Model->delete($this->tabela, $where);
-
-        //erro
-        if ($exec['erro']) {
-            $this->setMsg($this->msg_padrao['execucao'], 'red', $exec['erro']);
-        }
-        //Não encontrado
-        elseif ($exec['prep']->rowCount() == 0) {
-            $this->setMsg(
-                "$this->descricao_singular não {$this->msg_padrao['encontrar']} para excluir",
-                'red',
-                $this->msg_padrao['nenhuma']
-            );
-        }
-        //Sucesso
-        else {
-            $this->setMsg(
-                "$this->descricao_singular {$this->msg_padrao['excluir']} com sucesso!",
-                'green',
-                $this->getMsgLinhaAfetada($exec['prep']->rowCount())
-            );
-        }
-
-        //list
-        $this->list();
-    }
-
-    public function edit()
-    {
-
-        //all
-        $where = [$this->chave => CHAVE];
-        $all = $this->Model->list($where);
-        $this->Dado = (isset($all['dados'][0]) ? $all['dados'][0] : []);
-
-        //erro
-        if ($all['erro']) {
-            $this->setMsg($this->msg_padrao['execucao'], 'red', $all['erro']);
-        }
-        //Não encontrado
-        elseif (count($this->Dado) == 0) {
-            $this->setMsg(
-                "$this->descricao_singular não {$this->msg_padrao['encontrar']} para editar",
-                'red',
-                $this->msg_padrao['nenhuma']
-            );
-        }
-        //Sucesso
-        else {
-            //Params
-            $this->acao = 'update';
-            $this->acao_descricao = 'Alterar';
-        }
-
-        //list
-        $this->list();
-    }
-
+    
     public function update()
     {
 
@@ -167,7 +96,7 @@ class Controller
         //erros de campo
         if ($DADOS['erros']) {
             $msg = '<li>' . implode('<li>', $DADOS['erros']);
-            $cor = 'red';
+            $style = 'danger';
             $obs = 'Verifique os dados';
         } else {
 
@@ -177,35 +106,35 @@ class Controller
 
             //erro
             if ($exec['erro']) {
-                $this->setMsg($this->msg_padrao['execucao'], 'red', $exec['erro']);
+                $this->setMsg($this->msg_padrao['execucao'], 'danger', $exec['erro']);
             }
             //Nada modificado
             elseif ($exec['prep']->rowCount() == 0) {
                 $msg = "$this->descricao_singular não {$this->msg_padrao['alterar']}, nada modificado.";
-                $cor = 'red';
-                $obs = $this->msg_padrao['nenhuma'];
+                $style = 'danger';
+                $obs = $this->getMsgLinha(0);
             }
             //Sucesso
             else {
                 $msg = "$this->descricao_singular {$this->msg_padrao['alterar']} com sucesso!";
-                $cor = 'green';
-                $obs = $this->getMsgLinhaAfetada($exec['prep']->rowCount());
+                $style = 'success';
+                $obs = $this->getMsgLinha($exec['prep']->rowCount());
             }
         }
 
         //list
-        $this->setMsg($msg, $cor, $obs);
+        $this->setMsg($msg, $style, $obs);
         $this->list();
     }
 
     //mensagem 
-    public function setMsg($msg, $cor, $obs)
+    public function setMsg($msg, $style, $obs)
     {
         $this->msg = " 
-            <h4 style='color: $cor'>
+            <div class='alert alert-$style'>
                 $msg<br>
                 <small style='font-size: 10px; color: silver'>$obs</small>
-            </h4>
+            </div>
         ";
     }
 
@@ -241,13 +170,18 @@ class Controller
                 $this->Dado[$col] = isset($this->Dado[$col]) ? $this->Dado[$col] : '';
             }
         }
+        
         $this->datatableNoSort[] = count($this->datatable);
         $this->datatableTh .= "<th>Ações</th>";
     }
 
-    protected function getMsgLinhaAfetada($number)
+    protected function getMsgLinha($number,$msg_padrao = 'afetar')
     {
-        return "$number linhas afetada(s)";
+        if ($number <= 1) {
+            return "$number $this->descricao_singular {$this->msg_padrao[$msg_padrao]}";
+        }
+        return "$number $this->descricao {$this->msg_padrao[$msg_padrao]}s";
+        
     }
 
     protected function getDadosValida($DADOS)
@@ -315,95 +249,19 @@ class Controller
     private function setMsgPadrao()
     {
         $this->msg_padrao['execucao'] = 'Não executou! Tente novamente. Se persistir entre em contato.';
-        $this->msg_padrao['nenhuma'] = 'Nenhuma linha encontrada.';
-
+        
         if ($this->modulo_masculino) {
             $this->msg_padrao['incluir'] = 'incluído';
             $this->msg_padrao['alterar'] = 'alterado';
             $this->msg_padrao['encontrar'] = 'encontrado';
             $this->msg_padrao['excluir'] = 'excluído';
+            $this->msg_padrao['afetar'] = 'afetado';
         } else {
             $this->msg_padrao['incluir'] = 'incluída';
             $this->msg_padrao['alterar'] = 'alterada';
             $this->msg_padrao['encontrar'] = 'encontrada';
             $this->msg_padrao['excluir'] = 'excluída';
+            $this->msg_padrao['afetar'] = 'afetada';
         }
-    }
-
-    public function dataTable()
-    {
-        $this->setDado();
-
-        ## Read value
-        $draw = $_POST['draw'];
-        $row = $_POST['start'];
-        $rowperpage = $_POST['length']; // Rows display per page
-        $columnIndex = $_POST['order'][0]['column']; // Column index
-        $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
-        $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
-        $searchValue = $_POST['search']['value']; // Search value
-
-        ## Search 
-        $busca = [];
-        foreach ($this->datatable as $col) {
-            $busca[] = " $col LIKE CONCAT('%',:searchValue,'%') ";
-        }
-        $searchQuery = '';
-        if ($searchValue != '') {
-            $searchQuery = " 
-                WHERE ( " . implode(' OR ', $busca) . " ) 
-            ";
-        }
-
-        ## Total number of records without filtering
-        $totalRecords = $this->Model->all("
-            SELECT COUNT(1) AS TOTAL 
-              FROM $this->tabela
-        ")['dados'][0]['TOTAL'];
-
-        ## Total number of record with filtering
-        $sql_padrao = "
-            SELECT * 
-              FROM ({$this->Model->select}) TB 
-        ";
-        $search_padrao = ($searchQuery ? [':searchValue' => $searchValue] : []);
-        $records = $this->Model->all(
-            $sql_padrao . $searchQuery,
-            $search_padrao
-        )['dados'];
-        $totalRecordwithFilter = count($records);
-
-        ## Fetch records
-        $empQuery = "
-                     $sql_padrao 
-                     $searchQuery
-            ORDER BY {$this->datatable[$columnName]} $columnSortOrder 
-               LIMIT $row, $rowperpage
-        ";
-        $empRecords = $this->Model->all(
-            $empQuery,
-            $search_padrao
-        )['dados'];
-        $data = [];
-        foreach ($empRecords as $id => $row) {
-            $data[$id] = [];
-            foreach ($this->datatable as $col) {
-                $data[$id][] = $row[$col];
-            }
-            $data[$id][] = "
-                <a href='$this->modulo/edit/{$row[$this->chave]}'>Editar</a>
-                <a href='$this->modulo/delete/{$row[$this->chave]}'>Excluir</a>
-            ";
-        }
-
-        ## Response
-        $response = [
-            "draw" => intval($draw),
-            "recordsTotal" => $totalRecords,
-            "recordsFiltered" => $totalRecordwithFilter,
-            "data" => $data
-        ];
-
-        exit(json_encode($response));
     }
 }

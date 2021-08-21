@@ -24,10 +24,4 @@ class AtividadeModel extends Model
           FROM ATIVIDADE A
          WHERE A.id = :id
     ';
-
-    public function getProjetos()
-    {
-        $ModelProjeto = $this->instancia('Projeto');
-        return $ModelProjeto->list()['dados'];
-    }
 }
