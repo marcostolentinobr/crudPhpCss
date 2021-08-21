@@ -56,3 +56,10 @@ Atividades
   ??? Seleciona projeto? Situação do projeto? Vindo de link? ???
   Mesmas situções que Dashboard->Atividades
   Listas ou cards
+
+  ===============================================================================
+  Falta
+
+  *Ordenar Inicio/Fim/Concluído no datatable
+  obs.: Ver como converter ele via data table para usar o order comum sem transformar no sql
+  

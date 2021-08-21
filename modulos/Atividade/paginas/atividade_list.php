@@ -31,6 +31,7 @@
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
             },
+            searchDelay: 350,
             processing: true,
             serverSide: true,
             serverMethod: 'post',

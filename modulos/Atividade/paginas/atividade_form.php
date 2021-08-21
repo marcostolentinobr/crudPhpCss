@@ -4,8 +4,15 @@
     <input name="id" value="<?= $this->Dado['id'] ?>" hidden>
 
     <!-- projeto_id -->
-    <label for="nome">Projeto:</label><br>
-    <input name="projeto_id" id="projeto_id" type="text" value="<?= $this->Dado['projeto_id'] ?>" required>
+    <label for="projeto_id">Projeto:</label><br>
+    <select name="projeto_id" id="projeto_id" required>
+        <option></option>
+        <?php foreach ($this->ProjetoDados as $dado) : ?>
+            <option value="<?= $dado['id'] ?>" <?= $this->Dado['projeto_id'] == $dado['id'] ? 'selected' : '' ?>>
+                <?= $dado['nome'] ?>
+            </option>
+        <?php endforeach ?>
+    </select>
     <br><br>
 
     <!-- nome -->

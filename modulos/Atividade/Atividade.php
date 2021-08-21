@@ -8,6 +8,9 @@ class Atividade extends Controller
     protected $chave = 'id';
     protected $tabela = 'ATIVIDADE';
 
+    //Projeto
+    protected $CidadeDados = [];
+
     protected $estrutura = [
 
         //projeto_id - manutencao
@@ -59,4 +62,10 @@ class Atividade extends Controller
             'datatable'    => '4|no-sort'
         ]
     ];
+
+    public function list()
+    {
+        $this->ProjetoDados = $this->Model->getProjetos();
+        parent::list();
+    }
 }

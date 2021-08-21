@@ -3,7 +3,7 @@
 class ProjetoModel extends Model
 {
 
-    protected $public = '
+    public $select = '
         SELECT 
         
                -- projeto
