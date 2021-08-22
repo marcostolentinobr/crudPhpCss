@@ -5,10 +5,10 @@ class AtividadeModel extends Model
     public $select = "
         SELECT A.id,
                A.nome,
-               DATE_FORMAT(A.data_inicio, '%d/%m/%Y') AS dt_inicio_desc,
-               DATE_FORMAT(A.data_fim, '%d/%m/%Y') AS dt_fim_desc,
-               DATE_FORMAT(A.data_concluido, '%d/%m/%Y') AS dt_concluido_desc,   
-               P.nome AS projeto_nome        
+               DATE_FORMAT(A.data_inicio, '%d/%m/%Y') data_inicio,
+               DATE_FORMAT(A.data_fim, '%d/%m/%Y') data_fim,
+               DATE_FORMAT(A.data_concluido, '%d/%m/%Y') data_concluido,   
+               P.nome AS projeto_nome
           FROM ATIVIDADE A
           JOIN PROJETO P
             ON P.id = A.projeto_id

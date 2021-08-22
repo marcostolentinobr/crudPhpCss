@@ -11,9 +11,8 @@ class Api
 
     public function dataTable()
     {
-
-        //dados
-        $this->setDado();
+        //lista
+        $this->setLista();
 
         //Post required
         $post = ['draw', 'start', 'length', 'order', 'columns', 'search'];
@@ -42,7 +41,7 @@ class Api
 
         //Search 
         $busca = [];
-        foreach ($this->datatable as $col) {
+        foreach ($this->datatable as $col => $data) {
             $busca[] = " $col LIKE CONCAT('%',:searchValue,'%') ";
         }
         $searchQuery = '';
@@ -123,7 +122,7 @@ class Api
                 'status' => 0,
                 'title' => "Excluir $this->modulo",
                 'msg' => $this->msg_padrao['execucao'],
-                '' => $this->msg_padrao['erro']
+                'detail' => $exec['erro']
             ]));
         }
 
@@ -181,6 +180,5 @@ class Api
             'msg' => $this->getMsgLinha(0, 'encontrar'),
             'detail' => $this->Dado
         ]));
-
     }
 }

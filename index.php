@@ -1,14 +1,18 @@
 <?php require_once __DIR__ . '/config.php' ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 
-<header>
-    <title><?= TITULO ?></title>
-    <base href="<?= URL ?>" />
-</header>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
+    <header>
+        <title><?= TITULO ?></title>
+        <base href="<?= URL ?>" />
+    </header>
+
+<body class="container">
 
     <!-- menu -->
     <strong>EUAX</strong> |
@@ -16,7 +20,6 @@
     <a href="<?= URL ?>Projeto/list">Projetos</a> |
     <a href="<?= URL ?>Atividade/list">Atividades</a>
 
-    <!-- instanciar controller -->
     <?php require_once RAIZ . '/modulos/View.php' ?>
 </body>
 

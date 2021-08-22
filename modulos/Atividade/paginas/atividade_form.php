@@ -20,7 +20,7 @@
                         <select class="form-select" name="projeto_id" id="projeto_id" required>
                             <option></option>
                             <?php foreach ($this->ProjetoDados as $dado) : ?>
-                                <option value="<?= $dado['projeto_id'] ?>" <?= $this->Dado['projeto_id'] == $dado['projeto_id'] ? 'selected' : '' ?>>
+                                <option value="<?= $dado['id'] ?>" <?= $this->Dado['projeto_id'] == $dado['id'] ? 'selected' : '' ?>>
                                     <?= $dado['nome'] ?>
                                 </option>
                             <?php endforeach ?>

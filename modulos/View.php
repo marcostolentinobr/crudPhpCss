@@ -6,8 +6,8 @@
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 
 <!-- datatable -->
-<link rel='stylesheet' href='https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css'>
-<script src='https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js'></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.10.25/r-2.2.9/datatables.min.css" />
+<script src="https://cdn.datatables.net/v/dt/dt-1.10.25/r-2.2.9/datatables.min.js"></script>
 
 <!-- modal msg -->
 <div class="modal fade" id="modal_msg" data-bs-backdrop="static">
@@ -61,9 +61,9 @@ if (class_exists($Classe)) {
 //Não existe classe
 else {
     echo '
-          <p>
-              1ª -> Cadastro o projeto<br>
-              2ª -> Cadastre a atividade
-          </p>
-      ';
+        <p>
+            1ª -> Cadastro o projeto<br>
+            2ª -> Cadastre a atividade
+        </p>
+    ';
 }

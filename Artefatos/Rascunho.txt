@@ -4,3 +4,4 @@
 *Validar min 3 caracteres nome, sobrenome, endereço no php
 *Erros de campos, acrescentar os erros em labels nos campos e focar no proximo erro
 *colocar modal para alterar, incluir
+*não permitir excluir quando já vinculado

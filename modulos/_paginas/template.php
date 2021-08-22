@@ -1,14 +1,16 @@
 <!-- title -->
 <h1>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_form_incluir_<?= $this->modulo ?>">+</button>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_form_incluir_<?= $this->modulo ?>">
+        +
+    </button>
     <?= $this->descricao ?>
 </h1>
 
-<!-- msg -->
+<!-- title -->
 <?= $this->msg ?>
 
 <!-- table -->
-<table id='<?= $this->modulo ?>Datatable'>
+<table id="<?= $this->modulo ?>Datatable" class="display" class="display" style="width:100%">
     <thead>
         <?= $this->datatableTh ?>
     </thead>
@@ -20,12 +22,13 @@
 
 <script>
     var datatable = null;
+    var modal_form_incluir = document.getElementById('modal_form_incluir_<?= $this->modulo ?>');
     $(document).ready(function() {
 
         //datatable
         datatable = $('#<?= $this->modulo ?>Datatable').DataTable({
             order: [
-                [<?= $this->datatableSortDefalt ?>, 'desc']
+                [<?= $this->datatableSortDefalt ?>, 'asc']
             ],
             columnDefs: [{
                 orderable: false,
@@ -37,6 +40,7 @@
             searchDelay: 350,
             processing: true,
             serverSide: true,
+            responsive: true,
             serverMethod: 'post',
             ajax: {
                 url: 'api/<?= $this->modulo ?>/datatable'
@@ -77,7 +81,7 @@
     //editar
     function editar(chave) {
         $.ajax({
-            type: 'GET',
+            type: 'PUT',
             url: 'api/<?= $this->modulo ?>/editar/' + chave,
             success: function(data) {
                 var data = $.parseJSON(data);
@@ -89,11 +93,10 @@
                     });
 
                     //modal
-                    $('#modal_form_incluir_<?= $this->modulo ?> .modal-title').html(data.title);
-                    $('#modal_form_incluir_<?= $this->modulo ?>').attr('action', '<?= $this->modulo ?>/update');
-                    $('#modal_form_incluir_<?= $this->modulo ?>').attr('method', 'PUT');
-                    $('#modal_form_incluir_<?= $this->modulo ?> .btn-success').html('Alterar');
-                    var modal = new bootstrap.Modal(document.getElementById('modal_form_incluir_<?= $this->modulo ?>'));
+                    $('.modal-title', modal_form_incluir).html(data.title);
+                    $(modal_form_incluir).attr('action', '<?= $this->modulo ?>/update');
+                    $('.btn-success', modal_form_incluir).html('Alterar');
+                    var modal = new bootstrap.Modal(modal_form_incluir);
                     modal.show();
 
                 } else {
@@ -114,13 +117,10 @@
     //fim editar
 
     //btn reset incluir
-    var modal = document.getElementById('modal_form_incluir_<?= $this->modulo ?>');
-    modal.addEventListener('hide.bs.modal', function() {
-        $('#modal_acao .modal-title').html('Incluir <?= $this->descricao_singular ?>');
-        var form = $('#form_<?= $this->modulo ?>');
-        form.attr('action', '<?= $this->modulo ?>/insert');
-        form.attr('method', 'POST');
-        form.trigger('reset');
-        $('#form_<?= $this->modulo ?> .btn-success').html('Incluir');
+    modal_form_incluir.addEventListener('hide.bs.modal', function() {
+        $('.modal-title', modal_form_incluir).html('Incluir <?= $this->descricao_singular ?>');
+        $(modal_form_incluir).attr('action', '<?= $this->modulo ?>/insert');
+        $(modal_form_incluir).trigger('reset');
+        $('.btn-success', modal_form_incluir).html('Incluir');
     })
 </script>

@@ -9,63 +9,45 @@ class Atividade extends Controller
     protected $tabela = 'ATIVIDADE';
 
     //Projeto
-    protected $CidadeDados = [];
+    protected $ProjetoDados = [];
 
-    protected $estrutura = [
+    //manutencao
+    protected $manutencao = [
 
-        //projeto_id - manutencao
-        'projeto_id' => [
-            'descricao' => 'Projeto',
-            'params'    => 'required|numeric'
-        ],
+        //projeto_id
+        'projeto_id' => 'Projeto|required|numeric',
+
+        //nome
+        'nome' => 'Atividade|required|trim|max:50',
+
+        //data_inicio
+        'data_inicio' => 'Início|required|date:Y-m-d',
+
+        //data_fim
+        'data_fim' => 'Fim|required|date:Y-m-d'
+    ];
+
+    protected $listagem = [
 
         //projeto_nome
-        'projeto_nome' => [
-            'descricao' => 'Projeto',
-            'datatable'    => 0
-        ],
+        'projeto_nome' => 'Projeto|sort:default',
 
-        //nome - manutencao
-        'nome' => [
-            'descricao' => 'Atividade',
-            'params'    => 'required|trim|max:50',
-            'datatable'    => 1
-        ],
-
-        //data_inicio - manutencao
-        'data_inicio' => [
-            'descricao' => 'Início',
-            'params'    => 'required|date:Y-m-d'
-        ],
+        //nome
+        'nome' => 'Atividade',
 
         //dt_inicio_desc
-        'dt_inicio_desc' => [
-            'descricao' => 'Início',
-            'datatable'    => '2|no-sort'
-        ],
-
-        //data_fim - manutencao
-        'data_fim' => [
-            'descricao' => 'Fim',
-            'params' => 'required|date:Y-m-d'
-        ],
+        'data_inicio' => 'Início|sort:no',
 
         //dt_fim_desc
-        'dt_fim_desc' => [
-            'descricao' => 'Fim',
-            'datatable'    => '3|no-sort'
-        ],
+        'data_fim' => 'Fim|sort:no',
 
         //dt_concluido_desc
-        'dt_concluido_desc' => [
-            'descricao' => 'Concluído',
-            'datatable'    => '4|no-sort'
-        ]
+        'data_concluido' => 'Concluído|sort:no',
     ];
 
     public function list()
     {
-        $this->CidadeDados = $this->Model->getList('Projeto');
+        $this->ProjetoDados = $this->Model->getList('Projeto');
         parent::list();
     }
 }

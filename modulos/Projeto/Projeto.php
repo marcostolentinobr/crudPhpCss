@@ -8,48 +8,37 @@ class Projeto extends Controller
     protected $chave = 'id';
     protected $tabela = 'PROJETO';
 
-    protected $estrutura = [
+    //manutencao
+    protected $manutencao = [
 
         //nome
-        'projeto_nome' => [
-            'descricao' => 'Nome',
-            'datatable'    => 0
-        ],
-
-        //nome
-        'nome' => [
-            'descricao' => 'Projeto',
-            'params'    => 'required|trim|max:50',
-        ],
+        'nome' => 'Projeto|required|trim|max:50',
 
         //data_inicio
-        'data_inicio' => [
-            'descricao' => 'Início',
-            'params'    => 'required|date:Y-m-d',
-        ],
-
-        //dt_inicio_desc
-        'dt_inicio_desc' => [
-            'descricao' => 'Início',
-            'datatable'    => '1|no-sort'
-        ],
+        'data_inicio' => 'Início|required|date:Y-m-d',
 
         //data_fim
-        'data_fim' => [
-            'descricao' => 'Fim',
-            'params' => 'required|date:Y-m-d'
-        ],
+        'data_fim' => 'Fim|required|date:Y-m-d'
+    ];
+
+    protected $listagem = [
+
+        //nome
+        'nome' => 'Projeto|sort:default',
+
+        //dt_inicio_desc
+        'data_inicio' => 'Início|sort:no',
 
         //dt_fim_desc
-        'dt_fim_desc' => [
-            'descricao' => 'Fim',
-            'datatable'    => '2|no-sort'
-        ],
+        'data_fim' => 'Fim|sort:no',
 
         //dt_concluido_desc
-        'dt_concluido_desc' => [
-            'descricao' => 'Concluído',
-            'datatable'    => '3|no-sort'
-        ]
+        'data_concluido' => 'Concluído|sort:no',
     ];
+
+    public function list()
+    {
+        $this->CidadeDados = $this->Model->getList('Projeto');
+        parent::list();
+    }
 }
