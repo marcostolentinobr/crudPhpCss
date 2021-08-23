@@ -17,10 +17,13 @@
 <body class="container">
 
     <!-- menu -->
-    <strong>EUAX</strong> |
-    <a href="<?= URL ?>">Início</a> |
-    <a href="<?= URL ?>Projeto">Projetos</a> |
-    <a href="<?= URL ?>Atividade">Atividades</a>
+    <strong><?= TITULO ?></strong> |
+
+    <?php
+    foreach (MENU as $url => $desc) {
+        echo "<a href='$url'>$desc</a> |";
+    }
+    ?>
 
     <!-- conteudo -->
     <?php require_once RAIZ . '/modulos/View.php' ?>

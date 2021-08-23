@@ -18,7 +18,7 @@
 *criar um loading
 *não permitir excluir quando já vinculado
 *criar um menu melhor bootstrap
-*paronizar itens do menu
+*Btn para concluir com data de concusão em projeto e atividade
 
 IMPORTANTE
 Após ter feito todos os cadastros precisamos saber quantos % dos projetos já temos finalizados e também se o projeto 

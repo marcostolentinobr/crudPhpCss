@@ -23,3 +23,10 @@ require_once __DIR__ . '/libs/functions.php';
 
 //init
 init();
+
+//Menu
+define('MENU', [
+    URL               => 'Início',
+    URL . 'Projeto'   => 'Projeto',
+    URL . 'Atividade' => 'Atividade',
+]);
