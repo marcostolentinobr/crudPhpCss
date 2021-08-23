@@ -7,7 +7,7 @@ class AtividadeModel extends Model
                A.nome,
                DATE_FORMAT(A.data_inicio, '%d/%m/%Y') data_inicio,
                DATE_FORMAT(A.data_fim, '%d/%m/%Y') data_fim,
-               DATE_FORMAT(A.data_concluido, '%d/%m/%Y') data_concluido,   
+               CASE WHEN A.data_concluido IS NOT NULL THEN DATE_FORMAT(A.data_concluido, '%d/%m/%Y') ELSE 'Não' END data_concluido,
                P.nome AS projeto_nome
           FROM ATIVIDADE A
           JOIN PROJETO P

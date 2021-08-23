@@ -8,7 +8,7 @@ class ProjetoModel extends Model
                P.nome,
                DATE_FORMAT(P.data_inicio, '%d/%m/%Y') data_inicio,
                DATE_FORMAT(P.data_fim, '%d/%m/%Y') data_fim,
-               DATE_FORMAT(P.data_concluido, '%d/%m/%Y') data_concluido
+               CASE WHEN P.data_concluido IS NOT NULL THEN DATE_FORMAT(P.data_concluido, '%d/%m/%Y') ELSE 'Não' END data_concluido
           FROM PROJETO P
       ORDER BY P.nome 
     ";
