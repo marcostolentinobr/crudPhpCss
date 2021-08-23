@@ -12,11 +12,14 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
-//Title
+//TITULO
 define('TITULO', 'EUAX');
+
+//MODULO_INICIAL
+define('MODULO_INICIAL', '');
 
 //Functions
 require_once __DIR__ . '/libs/functions.php';
 
-//Inicia
+//init
 init();

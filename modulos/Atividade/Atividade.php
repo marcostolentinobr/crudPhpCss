@@ -45,9 +45,9 @@ class Atividade extends Controller
         'data_concluido' => 'Concluído|sort:no',
     ];
 
-    public function list()
+    protected function view()
     {
         $this->ProjetoDados = $this->Model->getList('Projeto');
-        parent::list();
+        parent::view();
     }
 }

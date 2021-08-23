@@ -1,5 +1,3 @@
-# euax
-
 # Solução para acompanhar suas entregas.
 
 ## Problema
@@ -33,8 +31,8 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 
 | ID Atividade | ID Projeto | Nome Atividade | Data Inicio | Data Fim   | Finalizada? |
 | :---------- | :---------: | -------------: | ----------: | ---------: | ----------: |
-| 1          | 1            | Atividade 1    | 06/01/2019  | 15/01/2019 | Sim                 |
-| 2          | 1            | Atividade 2    | 16/01/2019  | 31/01/2019 | Não                 |
+| 1          | 1            | Atividade 1    | 06/01/2019  | 15/01/2019 | Sim         |
+| 2          | 1            | Atividade 2    | 16/01/2019  | 31/01/2019 | Não         |
 
 #### Simulação 2
 
@@ -44,9 +42,9 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 
 | ID Atividade | ID Projeto | Nome Atividade | Data Inicio | Data Fim   | Finalizada? |
 | :---------- | :---------: | -------------: | ----------: | ---------: | ----------: |
-| 1          | 2            | Atividade 1    | 01/02/2019  | 10/02/2019 | Não                 |
-| 2          | 2            | Atividade 2    | 11/02/2019  | 20/02/2019 | Não                 |
-| 3          | 2            | Atividade 3    | 21/02/2019  | 02/03/2019 | Não                 |
+| 1          | 2            | Atividade 1    | 01/02/2019  | 10/02/2019 | Não         |
+| 2          | 2            | Atividade 2    | 11/02/2019  | 20/02/2019 | Não         |
+| 3          | 2            | Atividade 3    | 21/02/2019  | 02/03/2019 | Não         |
 
 ## Conclusão
 ???? Explicar o funcionamento e tecnologias ????;
@@ -55,14 +53,8 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 * PHP;
 * Mysql;
 
-* ??? SOLID ???;
 * ??? PHPUnit (Testes automatizados) ???;
 * ???Docker (Ambiente)???;
 
-* ??? Seguir praticas de código limpo ???;
-* ??? Constantes melhorias ???;
-* ??? Melhorar a performance do produto ???;
-
 * ??? TDD ???;
-* ??? MVC ???;
 * ??? DDD ???;

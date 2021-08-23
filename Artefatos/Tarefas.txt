@@ -1,0 +1,28 @@
+*Criar class view mais bem elaborada com metodo datatable tirando ele do controller/api
+*Talvez o controller seja o autoload, sem ser extension de outro
+*Fazer validador apenas letra para validar no php
+*Reduzir o jquery para js puro ao máximo, e verifcar sobre datatable sem jquery
+*format data na datatable para poder ordenar
+*Erros de campos, acrescentar os erros em labels nos campos e focar no proximo erro (was-validated no form)
+*Focus no primeiro campo assim que abre modal
+*Confirmar exclusão
+*MUltipla exclusão
+*colocar layout em modal, warning, danger, sucess, primary ...
+*Retorno da api apenas dados, remover html como li nos erros, fazer li na view
+*Criar rotas permitidas, verificar slim framework
+*usar verbos, post,get,put, delet
+*usar  de uma melhor forma
+*tratar erros do datatable se vier
+*padronizar funcoes na manutenção em js
+*utilizar docker
+*criar um loading
+*não permitir excluir quando já vinculado
+*criar um menu melhor bootstrap
+*paronizar itens do menu
+
+IMPORTANTE
+Após ter feito todos os cadastros precisamos saber quantos % dos projetos já temos finalizados e também se o projeto 
+terá atrasos ou não. Para saber a % de andamento do projeto deve ser considerado o número de atividades finalizadas 
+e quantidade de atividades ainda sem finalizar. Para saber se o projeto terá atraso considere a maior data final das 
+atividades e compare com a data final do projeto, se for maior que a data final, o projeto terminará com atrasos. 
+Abaixo segue tabelas para cadastros.
