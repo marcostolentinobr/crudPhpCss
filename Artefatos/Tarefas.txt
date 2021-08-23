@@ -15,6 +15,7 @@
 *tratar erros do datatable se vier
 *padronizar funcoes na manutenção em js
 *utilizar docker
+*utilizar PHPUnit
 *criar um loading
 *não permitir excluir quando já vinculado
 *criar um menu melhor bootstrap
