@@ -20,6 +20,7 @@
 *não permitir excluir quando já vinculado
 *criar um menu melhor bootstrap
 *Btn para concluir com data de concusão em projeto e atividade
+*verificar se existe alguma forma de no datatable aparecer scroll já colocando a listagem da altura da tela
 
 IMPORTANTE
 Após ter feito todos os cadastros precisamos saber quantos % dos projetos já temos finalizados e também se o projeto 
