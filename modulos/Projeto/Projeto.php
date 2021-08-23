@@ -12,7 +12,7 @@ class Projeto extends Controller
     protected $manutencao = [
 
         //nome
-        'nome' => 'Projeto|required|trim|max:50',
+        'nome' => 'Projeto|required|trim|max:50|min:3',
 
         //data_inicio
         'data_inicio' => 'Início|required|date:Y-m-d',
@@ -26,19 +26,13 @@ class Projeto extends Controller
         //nome
         'nome' => 'Projeto|sort:default',
 
-        //dt_inicio_desc
+        //data_inicio
         'data_inicio' => 'Início|sort:no',
 
-        //dt_fim_desc
+        //data_fim
         'data_fim' => 'Fim|sort:no',
 
-        //dt_concluido_desc
+        //data_concluido
         'data_concluido' => 'Concluído|sort:no',
     ];
-
-    public function list()
-    {
-        $this->CidadeDados = $this->Model->getList('Projeto');
-        parent::list();
-    }
 }

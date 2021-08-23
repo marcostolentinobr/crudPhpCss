@@ -18,7 +18,7 @@ class Atividade extends Controller
         'projeto_id' => 'Projeto|required|numeric',
 
         //nome
-        'nome' => 'Atividade|required|trim|max:50',
+        'nome' => 'Atividade|required|trim|max:50|min:3',
 
         //data_inicio
         'data_inicio' => 'Início|required|date:Y-m-d',
@@ -35,13 +35,13 @@ class Atividade extends Controller
         //nome
         'nome' => 'Atividade',
 
-        //dt_inicio_desc
+        //data_inicio
         'data_inicio' => 'Início|sort:no',
 
-        //dt_fim_desc
+        //data_fim
         'data_fim' => 'Fim|sort:no',
 
-        //dt_concluido_desc
+        //data_concluido
         'data_concluido' => 'Concluído|sort:no',
     ];
 
