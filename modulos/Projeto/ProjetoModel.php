@@ -3,19 +3,6 @@
 class ProjetoModel extends Model
 {
 
-    /*
-//projeto concluido
-    SELECT  TB.*,
-            (TB.concluido_qtd * 100 / TB.total) concluido_por
-      FROM ( 
-		        SELECT 
-		               COUNT(1) AS total,
-		               SUM(CASE WHEN data_concluido IS NOT NULL THEN 1 ELSE 0 END) AS concluido_qtd 
-		          FROM PROJETO P
-           ) TB
-*/
-
-
     public $select = "
         SELECT P.id,
                P.nome,
@@ -40,7 +27,7 @@ class ProjetoModel extends Model
                   GROUP BY A.projeto_id
                 ) A
             ON A.projeto_id = P.id
-";
+    ";
 
     protected $select_edit = '
         SELECT P.id,
@@ -49,4 +36,16 @@ class ProjetoModel extends Model
           FROM PROJETO P
          WHERE P.id = :id
     ';
+
+    public function getNumeros()
+    {
+
+        $qry = "
+            SELECT COUNT(1) AS qtd, 
+                   (SUM(CASE WHEN concluido_por = 100 OR concluido_por IS NULL THEN 1 ELSE 0 END) * 100) / COUNT(1) AS concluido_por 
+              FROM ( $this->select ) TB 
+        ";
+
+        return $this->all($qry);
+    }
 }

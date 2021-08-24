@@ -45,4 +45,36 @@ class Projeto extends Controller
         //atrasara
         'atrasara' => 'Atrasará?'
     ];
+
+    protected function view()
+    {
+        //form
+        $this->setDado();
+        $this->addPagina('form');
+
+        //View
+        $this->setLista();
+
+        //cabecalho
+        require_once RAIZ . '/modulos/_paginas/template_cabecalho.php';
+
+        //numeros
+        $this->addPagina('numeros');
+
+        //datatable
+        require_once RAIZ . '/modulos/_paginas/template_datatable.php';
+
+        //acao
+        require_once RAIZ . '/modulos/_paginas/template_acao.php';
+    }
+
+    public function numeros()
+    {
+        exit(json_encode([
+            'status' => 1,
+            'title'  => "Números $this->modulo",
+            'msg'    => "$this->descricao retornados com sucesso!",
+            'detail' => $this->Model->getNumeros()['dados'][0]
+        ]));
+    }
 }

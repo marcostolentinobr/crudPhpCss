@@ -26,3 +26,6 @@
 *template_datatable utilizar com algum require padrão
 *para otimizar, fazer paginação separada.
 *não acrescentado data_inicio nem data_concluido em projeto pois não houve necessidade no primeiro momento;
+*Usar quantidad total de projetos igual o da paginação
+*casas decimais em porcentagem
+*esta atualizando os numeros em projeto quando fecha modal, otimizar isso

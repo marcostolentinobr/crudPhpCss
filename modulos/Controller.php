@@ -41,7 +41,15 @@ class Controller extends Api
 
         //View
         $this->setLista();
-        require_once RAIZ . "/modulos/_paginas/template.php";
+
+        //cabecalho
+        require_once RAIZ . '/modulos/_paginas/template_cabecalho.php';
+
+        //datatable
+        require_once RAIZ . '/modulos/_paginas/template_datatable.php';
+
+        //acao
+        require_once RAIZ . '/modulos/_paginas/template_acao.php';
     }
 
     protected function setDado()
