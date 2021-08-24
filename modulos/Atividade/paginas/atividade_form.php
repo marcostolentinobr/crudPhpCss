@@ -55,7 +55,7 @@
 
                     <!-- data_concluido -->
                     <div class="col-sm-12">
-                        <label for="data_inicio" class="form-label">Data de nascimento:</label>
+                        <label for="data_concluido" class="form-label">Concluído:</label>
                         <input type="date" class="form-control" id="data_concluido" name="data_concluido" value="<?= $this->Dado['data_concluido'] ?>">
                     </div>
 

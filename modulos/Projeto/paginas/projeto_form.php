@@ -38,6 +38,16 @@
 
                 </div>
 
+                <div class="row g-3">
+
+                    <!-- data_concluido -->
+                    <div class="col-sm-12">
+                        <label for="data_inicio" class="form-label">Concluído:</label>
+                        <input type="date" class="form-control" id="data_concluido" name="data_concluido" value="<?= $this->Dado['data_concluido'] ?>">
+                    </div>
+
+                </div>
+
             </div>
 
             <!-- btn -->

@@ -18,7 +18,10 @@ class Projeto extends Controller
         'data_inicio' => 'Início|required|date:Y-m-d',
 
         //data_fim
-        'data_fim' => 'Fim|required|date:Y-m-d'
+        'data_fim' => 'Fim|required|date:Y-m-d',
+
+        //data_concluido
+        'data_concluido' => 'Concluído|date:Y-m-d'
     ];
 
     protected $listagem = [
@@ -35,4 +38,17 @@ class Projeto extends Controller
         //data_concluido
         'data_concluido' => 'Concluído|sort:no',
     ];
+
+    protected function getDadosValida($DADOS)
+    {
+        $return = parent::getDadosValida($DADOS);
+        $dados = $return['dados'];
+
+        //data_inicio > data_fim
+        if ($dados['data_inicio'] > $dados['data_fim']) {
+            $return['erros'][] = 'Data de início deve ser menor que a data fim';
+        }
+
+        return $return;
+    }
 }
