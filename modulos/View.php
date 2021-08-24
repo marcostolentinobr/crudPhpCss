@@ -39,11 +39,5 @@ if (class_exists($Classe)) {
 }
 //Não existe classe
 else {
-    //header('Location: ' . MODULO_INICIAL);
-    echo '
-        <p>
-            1ª -> Cadastro o projeto<br>
-            2ª -> Cadastre a atividade
-        </p>
-    ';
+    header('Location: ' . MODULO_INICIAL);
 }

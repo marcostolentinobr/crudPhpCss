@@ -23,7 +23,9 @@ class Controller extends Api
         $this->Model = new $model();
 
         //Msg
-        $this->setMsgPadrao();
+        if (isset($this->modulo_masculino)) {
+            $this->setMsgPadrao();
+        }
 
         //Sem método ir para view
         if (!METODO) {
@@ -166,7 +168,7 @@ class Controller extends Api
         ];
     }
 
-    private function addPagina($pagina)
+    protected function addPagina($pagina)
     {
         require_once RAIZ . "/modulos/$this->modulo/paginas/" . strtolower($this->modulo) . "_$pagina.php";
     }

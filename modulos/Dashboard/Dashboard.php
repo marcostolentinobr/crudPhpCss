@@ -1,10 +1,17 @@
 <?php
 
-class Atividade extends Controller
+class Dashboard extends Controller
 {
+
+    protected function view()
+    {
+        $this->addPagina('index');
+    }
+
+    /*
     protected $descricao = 'Atividades';
     protected $descricao_singular = 'Atividade';
-    protected $modulo_masculino = false;
+    
     protected $chave = 'id';
     protected $tabela = 'ATIVIDADE';
 
@@ -64,11 +71,7 @@ class Atividade extends Controller
             $return['erros'][] = 'Data de início deve ser menor que a data fim';
         }
 
-        //data_fim > data_concluido
-        if (!empty($dados['data_concluido']) && $dados['data_fim'] > $dados['data_concluido']) {
-            $return['erros'][] = 'Data de conclusão deve ser maior que a data fim';
-        }
-
         return $return;
     }
+    */
 }

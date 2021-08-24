@@ -49,6 +49,11 @@ class Projeto extends Controller
             $return['erros'][] = 'Data de início deve ser menor que a data fim';
         }
 
+        //data_fim > data_concluido
+        if (!empty($dados['data_concluido']) && $dados['data_fim'] > $dados['data_concluido']) {
+            $return['erros'][] = 'Data de conclusão deve ser maior que a data fim';
+        }
+
         return $return;
     }
 }
