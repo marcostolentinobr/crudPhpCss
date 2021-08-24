@@ -118,6 +118,12 @@ class Controller extends Api
                     break;
                 }
 
+                //empty
+                if (empty(trim($campo[$col]))) {
+                    $campo[$col] = null;
+                    break;
+                }
+
                 //trim
                 if ($param == 'trim') {
                     $campo[$col] = trim($campo[$col]);

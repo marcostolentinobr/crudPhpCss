@@ -19,6 +19,9 @@
 *criar um loading
 *não permitir excluir quando já vinculado
 *criar um menu melhor bootstrap
+*criador de campos, para remover as redundâncias, colocar layout em controller e voltar a ser array multiplo
+
+
 *Btn para concluir com data de concusão em projeto e atividade
 *verificar se existe alguma forma de no datatable aparecer scroll já colocando a listagem da altura da tela
 

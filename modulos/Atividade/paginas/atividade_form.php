@@ -39,14 +39,24 @@
 
                     <!-- data_inicio -->
                     <div class="col-sm-6">
-                        <label for="data_inicio" class="form-label">Data de nascimento:</label>
+                        <label for="data_inicio" class="form-label">Início:</label>
                         <input type="date" class="form-control" id="data_inicio" name="data_inicio" required value="<?= $this->Dado['data_inicio'] ?>">
                     </div>
 
                     <!-- data_fim -->
                     <div class="col-sm-6">
-                        <label for="data_fim" class="form-label">Data de nascimento:</label>
+                        <label for="data_fim" class="form-label">Fim:</label>
                         <input type="date" class="form-control" id="data_fim" name="data_fim" required value="<?= $this->Dado['data_fim'] ?>">
+                    </div>
+
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- data_concluido -->
+                    <div class="col-sm-12">
+                        <label for="data_inicio" class="form-label">Data de nascimento:</label>
+                        <input type="date" class="form-control" id="data_concluido" name="data_concluido" value="<?= $this->Dado['data_concluido'] ?>">
                     </div>
 
                 </div>

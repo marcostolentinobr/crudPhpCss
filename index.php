@@ -21,7 +21,7 @@
 
     <?php
     foreach (MENU as $url => $desc) {
-        echo "<a href='$url'>$desc</a> |";
+        echo "<a href='$url'>$desc</a> | ";
     }
     ?>
 
