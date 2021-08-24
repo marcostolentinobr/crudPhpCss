@@ -25,7 +25,24 @@ class Projeto extends Controller
         'nome' => 'Projeto|sort:default',
 
         //data_fim
-        'data_fim' => 'Fim|sort:no'
+        'data_fim' => 'Fim|sort:no',
 
+        //atividade_fim_max
+        'atividade_fim_max' => 'Última atividade|sort:no',
+
+        //qtd
+        'qtd' => 'Qtd Atividade',
+
+        //concluido_qtd
+        'concluido_qtd' => 'Qtd concluída',
+
+        //falta_qtd
+        'falta_qtd' => 'Qtd faltante',
+
+        //falta_qtd
+        'concluido_por' => 'Concluído(%)',
+
+        //atrasara
+        'atrasara' => 'Atrasará?'
     ];
 }

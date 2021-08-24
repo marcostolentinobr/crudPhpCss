@@ -16,7 +16,7 @@ define('DB_CHARSET', 'utf8mb4');
 define('TITULO', 'EUAX');
 
 //MODULO_INICIAL
-define('MODULO_INICIAL', 'Dashboard');
+define('MODULO_INICIAL', 'Projeto');
 
 //Functions
 require_once __DIR__ . '/libs/functions.php';
@@ -26,7 +26,6 @@ init();
 
 //Menu
 define('MENU', [
-    URL               => 'Dashboard',
     URL . 'Projeto'   => 'Projetos',
     URL . 'Atividade' => 'Atividades',
 ]);
