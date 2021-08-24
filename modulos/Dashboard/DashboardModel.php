@@ -3,27 +3,39 @@
 class DashboardModel extends Model
 {
     /*
-    public $select = "
-        SELECT A.id,
-               A.nome,
-               DATE_FORMAT(A.data_inicio, '%d/%m/%Y') data_inicio,
-               DATE_FORMAT(A.data_fim, '%d/%m/%Y') data_fim,
-               CASE WHEN A.data_concluido IS NOT NULL THEN DATE_FORMAT(A.data_concluido, '%d/%m/%Y') ELSE 'Não' END data_concluido,
-               P.nome AS projeto_nome
-          FROM ATIVIDADE A
-          JOIN PROJETO P
-            ON P.id = A.projeto_id
-    ";
+//projeto concluido
+    SELECT  TB.*,
+            (TB.concluido_qtd * 100 / TB.total) concluido_por
+      FROM ( 
+		        SELECT 
+		               COUNT(1) AS total,
+		               SUM(CASE WHEN data_concluido IS NOT NULL THEN 1 ELSE 0 END) AS concluido_qtd 
+		          FROM PROJETO P
+           ) TB
+*/
 
-    protected $select_edit = '
-        SELECT A.id,
-               A.nome,
-               A.data_inicio,
-               A.data_fim,
-               A.data_concluido,
-               A.projeto_id       
-          FROM ATIVIDADE A
-         WHERE A.id = :id
-    ';
-    */
+
+    public $select = "
+        SELECT P.nome,
+               DATE_FORMAT(P.data_fim, '%d/%m/%Y') AS data_fim,
+               DATE_FORMAT(A.atividade_fim_max, '%d/%m/%Y') AS atividade_fim_max,
+               A.qtd,
+               A.concluido_qtd, 
+               (A.qtd - A.concluido_qtd) AS falta_qtd,
+               ((A.concluido_qtd * 100) / A.qtd) AS concluido_por,
+               CASE WHEN (A.qtd - A.concluido_qtd) = 0 THEN 'Concluído'
+                    WHEN A.atividade_fim_max > P.data_fim THEN 'Sim' 
+                    ELSE 'Não' 
+               END AS atrasara
+          FROM PROJETO P 
+     LEFT JOIN (     
+                    SELECT A.projeto_id,
+                           MAX(A.data_fim) as atividade_fim_max,
+                           COUNT(1) AS qtd,
+                           SUM(CASE WHEN A.data_concluido IS NOT NULL THEN 1 ELSE 0 END) AS concluido_qtd
+                      FROM ATIVIDADE A
+                  GROUP BY A.projeto_id
+                ) A
+             ON A.projeto_id = P.id
+    ";
 }

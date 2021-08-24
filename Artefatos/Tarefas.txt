@@ -22,11 +22,7 @@
 *criador de campos, para remover as redundâncias, colocar layout em controller e voltar a ser array multiplo
 *verificar se existe alguma forma de no datatable aparecer scroll já colocando a listagem da altura da tela
 *verificar no datatable se tem select para selecionar e vir apenas um projeto
-
-
-IMPORTANTE
-Após ter feito todos os cadastros precisamos saber quantos % dos projetos já temos finalizados e também se o projeto 
-terá atrasos ou não. Para saber a % de andamento do projeto deve ser considerado o número de atividades finalizadas 
-e quantidade de atividades ainda sem finalizar. Para saber se o projeto terá atraso considere a maior data final das 
-atividades e compare com a data final do projeto, se for maior que a data final, o projeto terminará com atrasos. 
-Abaixo segue tabelas para cadastros.
+*o ideal seria tanto em projeto quanto em atividade a ordenacao padrão a data_fim asc, nao concluido
+*template_datatable utilizar com algum require padrão
+*para otimizar, fazer paginação separada.
+*não acrescentado data_inicio nem data_concluido em projeto pois não houve necessidade no primeiro momento;

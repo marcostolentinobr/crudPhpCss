@@ -2,76 +2,36 @@
 
 class Dashboard extends Controller
 {
-
-    protected function view()
-    {
-        $this->addPagina('index');
-    }
-
-    /*
-    protected $descricao = 'Atividades';
-    protected $descricao_singular = 'Atividade';
-    
-    protected $chave = 'id';
-    protected $tabela = 'ATIVIDADE';
-
-    //Projeto
-    protected $ProjetoDados = [];
-
-    //manutencao
-    protected $manutencao = [
-
-        //projeto_id
-        'projeto_id' => 'Projeto|required|numeric',
-
-        //nome
-        'nome' => 'Atividade|required|trim|max:50|min:3',
-
-        //data_inicio
-        'data_inicio' => 'Início|required|date:Y-m-d',
-
-        //data_fim
-        'data_fim' => 'Fim|required|date:Y-m-d',
-
-        //data_concluido
-        'data_concluido' => 'Concluído|date:Y-m-d'
-    ];
+    protected $descricao = 'Projetos';
 
     protected $listagem = [
 
-        //projeto_nome
-        'projeto_nome' => 'Projeto|sort:default',
-
         //nome
-        'nome' => 'Atividade',
+        'nome' => 'Projeto|sort:default',
 
-        //data_inicio
-        'data_inicio' => 'Início|sort:no',
+        //atividade_fim_max
+        'atividade_fim_max' => 'Última atividade|sort:no',
 
-        //data_fim
-        'data_fim' => 'Fim|sort:no',
+        //qtd
+        'qtd' => 'Qtd Atividade',
 
-        //data_concluido
-        'data_concluido' => 'Concluído|sort:no',
+        //concluido_qtd
+        'concluido_qtd' => 'Qtd concluída',
+
+        //falta_qtd
+        'falta_qtd' => 'Qtd faltante',
+
+        //falta_qtd
+        'concluido_por' => 'Concluído(%)',
+
+        //atrasara
+        'atrasara' => 'Atrasará?'
     ];
+
 
     protected function view()
     {
-        $this->ProjetoDados = $this->Model->getList('Projeto');
-        parent::view();
+        echo "<h1>$this->descricao</h1>";
+        $this->setLista();
+        require_once RAIZ . '/modulos/_paginas/template_datatable.php';
     }
-
-    protected function getDadosValida($DADOS)
-    {
-        $return = parent::getDadosValida($DADOS);
-        $dados = $return['dados'];
-
-        //data_inicio > data_fim
-        if ($dados['data_inicio'] > $dados['data_fim']) {
-            $return['erros'][] = 'Data de início deve ser menor que a data fim';
-        }
-
-        return $return;
-    }
-    */
-}
