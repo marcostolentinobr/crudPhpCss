@@ -3,7 +3,7 @@
 CREATE TABLE PROJETO (
                 id INT AUTO_INCREMENT NOT NULL,
                 nome VARCHAR(50) NOT NULL,
-                data_fim DATE NOT NULL
+                data_fim DATE NOT NULL,
                 PRIMARY KEY (id)
 );
 

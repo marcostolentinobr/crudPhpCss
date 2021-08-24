@@ -46,15 +46,9 @@ Criar um cadastro de projetos com a data de início e data final para a entrega,
 | 2          | 2            | Atividade 2    | 11/02/2019  | 20/02/2019 | Não         |
 | 3          | 2            | Atividade 3    | 21/02/2019  | 02/03/2019 | Não         |
 
-## Conclusão
-???? Explicar o funcionamento e tecnologias ????;
+## Falta
+* Artefatos/Tarefas.txt
 
-## Usar
-* PHP;
-* Mysql;
-
-* ??? PHPUnit (Testes automatizados) ???;
-* ???Docker (Ambiente)???;
-
-* ??? TDD ???;
-* ??? DDD ???;
+## Rodar
+* Criar banco no mysql;
+* Rodar Artefatos/script.sql 
