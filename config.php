@@ -26,5 +26,6 @@ init();
 
 //Menu
 define('MENU', [
-    URL . 'Equipamento'   => 'Equipamentos'
+    URL . 'Projeto'   => 'Projetos',
+    URL . 'Atividade' => 'Atividades',
 ]);
